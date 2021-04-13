@@ -5,8 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -19,7 +23,7 @@ import com.dilaygulbagce.stockCardApplication.model.ProductEntiries;
 import com.dilaygulbagce.stockCardApplication.model.ProductQueries;
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
-public class ProductController implements ActionListener, KeyListener, InternalFrameListener {
+public class ProductController implements ActionListener, KeyListener, InternalFrameListener, MouseListener {
 	
 	private ProductEntiries productEntiries;
 	private ProductQueries productQueries;
@@ -34,6 +38,7 @@ public class ProductController implements ActionListener, KeyListener, InternalF
 		
 		this.mainFrame.menuItemOperation.addActionListener(this);
 		this.mainFrame.menuItemList.addActionListener(this);
+		
 		this.mainFrame.iFrameOperation.insertButton.addActionListener(this);
 		this.mainFrame.iFrameOperation.deleteButton.addActionListener(this);
 		this.mainFrame.iFrameOperation.updateButton.addActionListener(this);
@@ -41,9 +46,11 @@ public class ProductController implements ActionListener, KeyListener, InternalF
 		this.mainFrame.iFrameOperation.searchButton.addActionListener(this);
 		this.mainFrame.iFrameOperation.cleanButton.addActionListener(this);
 		this.mainFrame.iFrameOperation.tfSearchBar.addKeyListener(this); 
+		this.mainFrame.iFrameOperation.addInternalFrameListener(this);
+		
 		this.mainFrame.iFrameList.listButton.addActionListener(this);
+		this.mainFrame.iFrameList.table.addMouseListener((MouseListener) this);
 		this.mainFrame.iFrameList.addInternalFrameListener(this);
-
 	}
 	
 	public void start() {
@@ -52,46 +59,97 @@ public class ProductController implements ActionListener, KeyListener, InternalF
 	
 	@Override
 	public void actionPerformed (ActionEvent event) {
-		if(event.getSource() == mainFrame.menuItemOperation) {
+		if (event.getSource() == mainFrame.menuItemOperation) {
 			mainFrame.iFrameOperation.setLocation(15, 60);
 			mainFrame.iFrameOperation.setVisible(true);
 		}
 		
-		if(event.getSource() == mainFrame.menuItemList) {
+		if (event.getSource() == mainFrame.menuItemList) {
 			mainFrame.iFrameList.setLocation(490, 60);
 			mainFrame.iFrameList.setVisible(true);
 		}
 		
 		if (event.getSource() == mainFrame.iFrameOperation.insertButton) {
-			control();
-			insert();
+			if (control() == true) {
+				insert();
+			}
 		}
 		
 		if (event.getSource() == mainFrame.iFrameOperation.deleteButton) {
-			delete();
+			if (mainFrame.iFrameOperation.tfStockCode.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Silinecek Kaydı Seçiniz");
+			}
+			else {
+				int dialog = JOptionPane.showConfirmDialog(null, "Silmek istediğinize emin misiniz?", "Uyarı", JOptionPane.YES_NO_OPTION);
+				
+				if (dialog == JOptionPane.YES_OPTION) {
+					delete();
+				}
+			}
+		}
+	
+		if (event.getSource() == mainFrame.iFrameOperation.updateButton) {
+			if (control() == true) {
+				int dialog = JOptionPane.showConfirmDialog(null, "Güncellemeyi Onaylayınız", "Uyarı", JOptionPane.YES_NO_OPTION);
+				
+				if (dialog == JOptionPane.YES_OPTION) {
+					update();
+				}
+			}
 		}
 		
-		if (event.getSource() == mainFrame.iFrameOperation.updateButton) {
-			control();
-			update();
+		if (event.getSource() == mainFrame.iFrameOperation.copyButton) {
+			if(mainFrame.iFrameOperation.tfStockCode.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Kopyalanacak Kaydı Seçiniz");
+			}
+			else {
+				if (control() == true) {
+					copy();
+				}
+			}
 		}
 		
 		if (event.getSource() == mainFrame.iFrameOperation.searchButton) {
-			search();
+			if (mainFrame.iFrameOperation.tfSearchBar.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Aranacak Kaydın Stok Kodunu Giriniz");
+			}
+			else {
+				search();
+			}
 		}
 		
-		if(event.getSource() == mainFrame.iFrameOperation.cleanButton) {
+		if (event.getSource() == mainFrame.iFrameOperation.cleanButton) {
 			clean();
 		}
 		
-		if(event.getSource() == mainFrame.iFrameList.listButton) {
+		if (event.getSource() == mainFrame.iFrameList.listButton) {
 			list();
 		}
 	}
 	
 	@Override
+	public void mouseClicked(MouseEvent e) {
+		DefaultTableModel recordTable = (DefaultTableModel) mainFrame.iFrameList.table.getModel();
+		int selectedRows = mainFrame.iFrameList.table.getSelectedRow();
+		
+		try {
+			mainFrame.iFrameOperation.tfStockCode.setText(recordTable.getValueAt(selectedRows, 0).toString());
+			mainFrame.iFrameOperation.tfStockName.setText(recordTable.getValueAt(selectedRows, 1).toString());
+			mainFrame.iFrameOperation.cbStockType.setSelectedItem(recordTable.getValueAt(selectedRows, 2).toString());
+			mainFrame.iFrameOperation.cbUnit.setSelectedItem(recordTable.getValueAt(selectedRows, 3).toString());
+			mainFrame.iFrameOperation.tfBarcode.setText(recordTable.getValueAt(selectedRows, 4).toString());
+			mainFrame.iFrameOperation.cbVATType.getModel().setSelectedItem(recordTable.getValueAt(selectedRows, 5).toString());
+			java.util.Date date = new SimpleDateFormat("yyyy-MM-dd").parse(recordTable.getValueAt(selectedRows, 6).toString());
+			mainFrame.iFrameOperation.jdcCreationDate.setDate(date);
+			mainFrame.iFrameOperation.taDescription.setText(recordTable.getValueAt(selectedRows, 7).toString());
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			search();
 		}
 	}
@@ -100,13 +158,14 @@ public class ProductController implements ActionListener, KeyListener, InternalF
 	public void internalFrameClosing(InternalFrameEvent e) {
 		DefaultTableModel recordTable = (DefaultTableModel) mainFrame.iFrameList.table.getModel();
         recordTable.setRowCount(0);
+        clean();
 	}
 	
 	public void list() {
 		try {
 			ArrayList<Vector> productList = productQueries.List();
 			
-			if(productList != null) {
+			if (productList != null) {
 				DefaultTableModel recordTable = (DefaultTableModel) mainFrame.iFrameList.table.getModel();
 	            recordTable.setRowCount(0);
 	      
@@ -142,8 +201,6 @@ public class ProductController implements ActionListener, KeyListener, InternalF
 				JOptionPane.showMessageDialog(null, "Bu Stok Kodu Zaten Kayıtlı!");
 				clean();
 			}
-		} catch (HeadlessException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -161,8 +218,6 @@ public class ProductController implements ActionListener, KeyListener, InternalF
 				JOptionPane.showMessageDialog(null, "Hata!");
 				clean();
 			}
-		} catch (HeadlessException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -188,8 +243,23 @@ public class ProductController implements ActionListener, KeyListener, InternalF
 				JOptionPane.showMessageDialog(null, "Hata!");
 				clean();
 			}
-		} catch (HeadlessException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void copy() {
+		productEntiries.setStockCode(mainFrame.iFrameOperation.tfStockCode.getText());
+		
+		try {
+			if (productQueries.Copy(productEntiries)) {
+				JOptionPane.showMessageDialog(null, "Kopyalama İşlemi Başarılı!");
+				clean();
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Bu Stok Kodu Zaten Kayıtlı!");
+				clean();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -214,41 +284,48 @@ public class ProductController implements ActionListener, KeyListener, InternalF
 				JOptionPane.showMessageDialog(null, "Kayıt Bulanamadı!");
 				clean();
 			}
-		} catch (HeadlessException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void control() {
+	public boolean control() {
 		if(mainFrame.iFrameOperation.tfStockCode.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Stok Kodu Alanı Boş Bırakılamaz");
+			return false;
         }
         
         else if (mainFrame.iFrameOperation.tfStockName.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Stok Adı Alanı Boş Bırakılamaz");
+            return false;
         }
         
         else if (mainFrame.iFrameOperation.cbStockType.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(null, "Stok Tipi Alanı Boş Bırakılamaz");
+            return false;
         }
         
         else if (mainFrame.iFrameOperation.cbUnit.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(null, "Stok Birimi Alanı Boş Bırakılamaz");
+            return false;
         }
         
         else if (mainFrame.iFrameOperation.tfBarcode.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Barkod Alanı Boş Bırakılamaz");
+            return false;
         }
         
         else if (mainFrame.iFrameOperation.cbVATType.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(null, "KDV Tipi Alanı Boş Bırakılamaz");
+            return false;
         }
         
         else if (mainFrame.iFrameOperation.jdcCreationDate.getDate() == null) {
             JOptionPane.showMessageDialog(null, "Oluşturma Tarihi Alanı Boş Bırakılamaz");
+            return false;
         }
+		
+		return true;
 	}
 	
 	public void clean() {
@@ -264,6 +341,54 @@ public class ProductController implements ActionListener, KeyListener, InternalF
 	}
 
 	@Override
+	public void internalFrameOpened(InternalFrameEvent e) {
+	}
+
+	@Override
+	public void internalFrameClosed(InternalFrameEvent e) {
+	}
+
+	@Override
+	public void internalFrameIconified(InternalFrameEvent e) {
+	}
+
+	@Override
+	public void internalFrameDeiconified(InternalFrameEvent e) {
+	}
+
+	@Override
+	public void internalFrameActivated(InternalFrameEvent e) {
+	}
+
+	@Override
+	public void internalFrameDeactivated(InternalFrameEvent e) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -271,42 +396,6 @@ public class ProductController implements ActionListener, KeyListener, InternalF
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void internalFrameOpened(InternalFrameEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void internalFrameClosed(InternalFrameEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void internalFrameIconified(InternalFrameEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void internalFrameDeiconified(InternalFrameEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void internalFrameActivated(InternalFrameEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void internalFrameDeactivated(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

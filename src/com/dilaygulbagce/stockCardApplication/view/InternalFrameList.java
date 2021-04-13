@@ -15,7 +15,6 @@ public class InternalFrameList extends JInternalFrame {
 	public JTable table;
 	
 	public JButton listButton;
-	
 
 	/**
 	 * Launch the application.
@@ -34,6 +33,7 @@ public class InternalFrameList extends JInternalFrame {
 	}
 
 	public InternalFrameList() {
+		setIconifiable(true);
 		setTitle("Stok Kartları");
 		setClosable(true);
 		setResizable(true);

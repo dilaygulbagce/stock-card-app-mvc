@@ -50,6 +50,7 @@ public class InternalFrameOperation extends JInternalFrame {
 	}
 
 	public InternalFrameOperation() {
+		setIconifiable(true);
 		setTitle("Stok Kartı İşlemleri");
 		setResizable(true);
 		setClosable(true);
@@ -61,10 +62,11 @@ public class InternalFrameOperation extends JInternalFrame {
 		tfSearchBar = new JTextField();
 		tfSearchBar.setColumns(10);
 		tfSearchBar.setBounds(63, 29, 200, 23);
+		tfSearchBar.setDocument(new EntryLimit(50));
 		getContentPane().add(tfSearchBar);
 		
 		searchButton = new JButton("");
-		searchButton.setIcon(new ImageIcon("C:\\Users\\dilay\\OneDrive\\Masa\u00FCst\u00FC\\stockCardV2\\stockCardApp\\src\\view\\icons\\search.png"));
+		searchButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/search.png")));
 		searchButton.setBounds(279, 29, 91, 25);
 		getContentPane().add(searchButton);
 		
@@ -75,11 +77,13 @@ public class InternalFrameOperation extends JInternalFrame {
 		tfStockCode = new JTextField();
 		tfStockCode.setColumns(10);
 		tfStockCode.setBounds(151, 82, 200, 20);
+		tfStockCode.setDocument(new EntryLimit(50));
 		getContentPane().add(tfStockCode);
 		
 		tfStockName = new JTextField();
 		tfStockName.setColumns(10);
 		tfStockName.setBounds(151, 121, 200, 20);
+		tfStockName.setDocument(new EntryLimit(100));
 		getContentPane().add(tfStockName);
 		
 		JLabel lblNewLabel_1 = new JLabel("Stok Adı:");
@@ -123,6 +127,7 @@ public class InternalFrameOperation extends JInternalFrame {
 		tfBarcode = new JTextField();
 		tfBarcode.setColumns(10);
 		tfBarcode.setBounds(151, 241, 200, 20);
+		tfBarcode.setDocument(new EntryLimit(30));
 		getContentPane().add(tfBarcode);
 		
 		JLabel lblNewLabel_5 = new JLabel("KDV Tipi:");
@@ -151,27 +156,27 @@ public class InternalFrameOperation extends JInternalFrame {
 		getContentPane().add(taDescription);
 		
 		insertButton = new JButton("");
-		insertButton.setIcon(new ImageIcon("C:\\Users\\dilay\\OneDrive\\Masa\u00FCst\u00FC\\stockCardV2\\stockCardApp\\src\\view\\icons\\insert.png"));
+		insertButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/insert.png")));
 		insertButton.setBounds(31, 452, 50, 35);
 		getContentPane().add(insertButton);
 		
 		deleteButton = new JButton("");
-		deleteButton.setIcon(new ImageIcon("C:\\Users\\dilay\\OneDrive\\Masa\u00FCst\u00FC\\stockCardV2\\stockCardApp\\src\\view\\icons\\delete.png"));
+		deleteButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/delete.png")));
 		deleteButton.setBounds(111, 452, 50, 35);
 		getContentPane().add(deleteButton);
 		
 		copyButton = new JButton("");
-		copyButton.setIcon(new ImageIcon("C:\\Users\\dilay\\OneDrive\\Masa\u00FCst\u00FC\\stockCardV2\\stockCardApp\\src\\view\\icons\\copy.png"));
+		copyButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/copy.png")));
 		copyButton.setBounds(191, 452, 50, 35);
 		getContentPane().add(copyButton);
 		
 		updateButton = new JButton("");
-		updateButton.setIcon(new ImageIcon("C:\\Users\\dilay\\OneDrive\\Masa\u00FCst\u00FC\\stockCardV2\\stockCardApp\\src\\view\\icons\\update.png"));
+		updateButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/update.png")));
 		updateButton.setBounds(271, 452, 50, 35);
 		getContentPane().add(updateButton);
 		
 		cleanButton = new JButton("");
-		cleanButton.setIcon(new ImageIcon("C:\\Users\\dilay\\OneDrive\\Masa\u00FCst\u00FC\\stockCardV2\\stockCardApp\\src\\view\\icons\\clean.png"));
+		cleanButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/clean.png")));
 		cleanButton.setBounds(351, 452, 50, 35);
 		getContentPane().add(cleanButton);
 		
