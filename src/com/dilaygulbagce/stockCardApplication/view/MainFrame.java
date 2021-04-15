@@ -2,6 +2,8 @@ package com.dilaygulbagce.stockCardApplication.view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -9,37 +11,30 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuItem;
+import java.awt.Color;
+import java.awt.Toolkit;
 
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
 	static JFrame frame;
 	static JDesktopPane desktopPane;
-	public InternalFrameOperation iFrameOperation;
-	public InternalFrameList iFrameList;
-	public JMenuItem menuItemOperation;
-	public JMenuItem menuItemList;
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainFrame frame = new MainFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	public StockCardFrame stockCardFrame;
+	public StockCardListFrame stockCardListFrame;
+	public WarehouseCardFrame warehouseCardFrame;
+	public WarehouseCardListFrame warehouseCardListFrame;
+	public JMenuItem stockCardMenuItem;
+	public JMenuItem stockCardListMenuItem;
+	public JMenuItem warehouseCardMenuItem;
+	public JMenuItem warehouseCardListMenuItem;
 
 	public MainFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1330, 750);
 		
-		setTitle("Stok");
+		setTitle("Ana Ekran");
 		setLocationRelativeTo(null);
-		
+			
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
@@ -52,19 +47,32 @@ public class MainFrame extends JFrame {
 		setContentPane(contentPane);
 		
 		desktopPane = new JDesktopPane();
+		desktopPane.setBackground(Color.WHITE);
 		
-		iFrameOperation = new InternalFrameOperation();
-		desktopPane.add(iFrameOperation);
+		stockCardFrame = new StockCardFrame();
+		desktopPane.add(stockCardFrame);
 		
-		iFrameList = new InternalFrameList();
-		desktopPane.add(iFrameList);
+		stockCardListFrame = new StockCardListFrame();
+		desktopPane.add(stockCardListFrame);
+		
+		warehouseCardFrame = new WarehouseCardFrame();
+		desktopPane.add(warehouseCardFrame);
+		
+		warehouseCardListFrame = new WarehouseCardListFrame();
+		desktopPane.add(warehouseCardListFrame);
 		
 		getContentPane().add(desktopPane);
 			
-		menuItemOperation = new JMenuItem("Stok Kartı İşlemleri");
-		stockMenu.add(menuItemOperation);
+		stockCardMenuItem = new JMenuItem("Stok Kartı İşlemleri");
+		stockMenu.add(stockCardMenuItem);
 		
-		menuItemList = new JMenuItem("Stok Kartlarını Listele");
-		stockMenu.add(menuItemList);
+		stockCardListMenuItem = new JMenuItem("Stok Kartlarını Listele");
+		stockMenu.add(stockCardListMenuItem);
+		
+		warehouseCardMenuItem = new JMenuItem("Depo Kartı İşlemleri");
+		stockMenu.add(warehouseCardMenuItem);
+		
+		warehouseCardListMenuItem = new JMenuItem("Depo Kartlarını Listele");
+		stockMenu.add(warehouseCardListMenuItem);
 	}
 }

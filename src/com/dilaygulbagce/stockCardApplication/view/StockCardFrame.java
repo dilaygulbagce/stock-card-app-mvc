@@ -1,6 +1,5 @@
 package com.dilaygulbagce.stockCardApplication.view;
 
-import java.awt.EventQueue;
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -12,7 +11,10 @@ import javax.swing.ImageIcon;
 
 import com.toedter.calendar.JDateChooser;
 
-public class InternalFrameOperation extends JInternalFrame {
+import com.dilaygulbagce.stockCardApplication.utility.EntryLimit;
+
+public class StockCardFrame extends JInternalFrame {
+	
 	public JTextField tfSearchBar;
 	public JTextField tfStockCode;
 	public JTextField tfStockName;
@@ -21,6 +23,7 @@ public class InternalFrameOperation extends JInternalFrame {
 	public JComboBox<String> cbUnit;
 	public JComboBox<String> cbStockType;
 	public JComboBox<Double> cbVATType;
+	public JComboBox<String> cbWarehouseCode;
 	
 	public JDateChooser jdcCreationDate;
 	
@@ -33,25 +36,10 @@ public class InternalFrameOperation extends JInternalFrame {
 	public JButton cleanButton;
 	public JButton searchButton;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InternalFrameOperation frame = new InternalFrameOperation();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	public InternalFrameOperation() {
+	public StockCardFrame() {
+		
 		setIconifiable(true);
-		setTitle("Stok Kartı İşlemleri");
+		setTitle("Stok Kart");
 		setResizable(true);
 		setClosable(true);
 		setBounds(100, 100, 445, 570);
@@ -61,50 +49,48 @@ public class InternalFrameOperation extends JInternalFrame {
 		
 		tfSearchBar = new JTextField();
 		tfSearchBar.setColumns(10);
-		tfSearchBar.setBounds(63, 29, 200, 23);
+		tfSearchBar.setBounds(64, 19, 200, 23);
 		tfSearchBar.setDocument(new EntryLimit(50));
 		getContentPane().add(tfSearchBar);
 		
 		searchButton = new JButton("");
-		searchButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/search.png")));
-		searchButton.setBounds(279, 29, 91, 25);
+		searchButton.setIcon(new ImageIcon(StockCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/search.png")));
+		searchButton.setBounds(280, 15, 91, 30);
 		getContentPane().add(searchButton);
 		
 		JLabel lblNewLabel = new JLabel("Stok Kodu:");
-		lblNewLabel.setBounds(41, 84, 100, 16);
+		lblNewLabel.setBounds(39, 64, 100, 16);
 		getContentPane().add(lblNewLabel);
 		
 		tfStockCode = new JTextField();
 		tfStockCode.setColumns(10);
-		tfStockCode.setBounds(151, 82, 200, 20);
+		tfStockCode.setBounds(151, 64, 200, 20);
 		tfStockCode.setDocument(new EntryLimit(50));
 		getContentPane().add(tfStockCode);
 		
+		JLabel lblNewLabel_1 = new JLabel("Stok Adı:");
+		lblNewLabel_1.setBounds(39, 104, 100, 15);
+		getContentPane().add(lblNewLabel_1);
+		
 		tfStockName = new JTextField();
 		tfStockName.setColumns(10);
-		tfStockName.setBounds(151, 121, 200, 20);
+		tfStockName.setBounds(151, 101, 200, 20);
 		tfStockName.setDocument(new EntryLimit(100));
 		getContentPane().add(tfStockName);
 		
-		JLabel lblNewLabel_1 = new JLabel("Stok Adı:");
-		lblNewLabel_1.setBounds(41, 124, 100, 15);
-		getContentPane().add(lblNewLabel_1);
+		JLabel lblNewLabel_8 = new JLabel("Depo Kodu:");
+		lblNewLabel_8.setBounds(39, 144, 100, 16);
+		getContentPane().add(lblNewLabel_8);
+		
+		cbWarehouseCode = new JComboBox<String>();
+		cbWarehouseCode.addItem(null);
+		cbWarehouseCode.addItem("sss");
+		cbWarehouseCode.setBounds(151, 140, 200, 27);
+		getContentPane().add(cbWarehouseCode);
 		
 		JLabel lblNewLabel_2 = new JLabel("Stok Tipi:");
-		lblNewLabel_2.setBounds(41, 164, 100, 15);
+		lblNewLabel_2.setBounds(39, 184, 100, 15);
 		getContentPane().add(lblNewLabel_2);
-		
-		JLabel lblNewLabel_3 = new JLabel("Birimi:");
-		lblNewLabel_3.setBounds(41, 204, 100, 15);
-		getContentPane().add(lblNewLabel_3);
-		
-		cbUnit = new JComboBox<String>();
-		cbUnit.addItem(null);
-		cbUnit.addItem("Adet");
-		cbUnit.addItem("Kilogram");
-		cbUnit.addItem("Litre");
-		cbUnit.setBounds(151, 200, 200, 22);
-		getContentPane().add(cbUnit);
 		
 		cbStockType = new JComboBox<String>();
 		cbStockType.addItem(null);
@@ -117,21 +103,33 @@ public class InternalFrameOperation extends JInternalFrame {
 		cbStockType.addItem("Kuru Gıda");
 		cbStockType.addItem("Unlu Mamüller");
 		cbStockType.addItem("Su Ürünleri");
-		cbStockType.setBounds(151, 160, 200, 22);
+		cbStockType.setBounds(151, 181, 200, 22);
 		getContentPane().add(cbStockType);
 		
+		JLabel lblNewLabel_3 = new JLabel("Birimi:");
+		lblNewLabel_3.setBounds(39, 224, 100, 15);
+		getContentPane().add(lblNewLabel_3);
+		
+		cbUnit = new JComboBox<String>();
+		cbUnit.addItem(null);
+		cbUnit.addItem("Adet");
+		cbUnit.addItem("Kilogram");
+		cbUnit.addItem("Litre");
+		cbUnit.setBounds(151, 221, 200, 22);
+		getContentPane().add(cbUnit);
+		
 		JLabel lblNewLabel_4 = new JLabel("Barkodu:");
-		lblNewLabel_4.setBounds(41, 244, 100, 15);
+		lblNewLabel_4.setBounds(39, 264, 100, 15);
 		getContentPane().add(lblNewLabel_4);
 		
 		tfBarcode = new JTextField();
 		tfBarcode.setColumns(10);
-		tfBarcode.setBounds(151, 241, 200, 20);
+		tfBarcode.setBounds(151, 261, 200, 20);
 		tfBarcode.setDocument(new EntryLimit(30));
 		getContentPane().add(tfBarcode);
 		
 		JLabel lblNewLabel_5 = new JLabel("KDV Tipi:");
-		lblNewLabel_5.setBounds(41, 284, 100, 15);
+		lblNewLabel_5.setBounds(39, 304, 100, 15);
 		getContentPane().add(lblNewLabel_5);
 		
 		cbVATType = new JComboBox<Double>();
@@ -139,49 +137,49 @@ public class InternalFrameOperation extends JInternalFrame {
 		cbVATType.addItem(0.01);
 		cbVATType.addItem(0.08);
 		cbVATType.addItem(0.18);
-		cbVATType.setBounds(151, 280, 200, 22);
+		cbVATType.setBounds(151, 301, 200, 22);
 		getContentPane().add(cbVATType);
 		
 		JLabel lblNewLabel_6 = new JLabel("Oluşturma Tarihi:");
-		lblNewLabel_6.setBounds(41, 324, 100, 15);
+		lblNewLabel_6.setBounds(39, 344, 100, 15);
 		getContentPane().add(lblNewLabel_6);
 		
+		jdcCreationDate = new JDateChooser();
+		jdcCreationDate.setBounds(151, 339, 200, 20);
+		getContentPane().add(jdcCreationDate);
+		
 		JLabel lblNewLabel_7 = new JLabel("Açıklama:");
-		lblNewLabel_7.setBounds(41, 364, 100, 15);
+		lblNewLabel_7.setBounds(39, 384, 100, 15);
 		getContentPane().add(lblNewLabel_7);
 		
 		taDescription = new JTextArea();
 		taDescription.setWrapStyleWord(true);
-		taDescription.setBounds(151, 359, 200, 60);
+		taDescription.setBounds(151, 383, 200, 60);
 		getContentPane().add(taDescription);
 		
 		insertButton = new JButton("");
-		insertButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/insert.png")));
-		insertButton.setBounds(31, 452, 50, 35);
+		insertButton.setIcon(new ImageIcon(StockCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/insert.png")));
+		insertButton.setBounds(29, 468, 55, 40);
 		getContentPane().add(insertButton);
 		
 		deleteButton = new JButton("");
-		deleteButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/delete.png")));
-		deleteButton.setBounds(111, 452, 50, 35);
+		deleteButton.setIcon(new ImageIcon(StockCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/delete.png")));
+		deleteButton.setBounds(109, 468, 55, 40);
 		getContentPane().add(deleteButton);
 		
 		copyButton = new JButton("");
-		copyButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/copy.png")));
-		copyButton.setBounds(191, 452, 50, 35);
+		copyButton.setIcon(new ImageIcon(StockCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/copy.png")));
+		copyButton.setBounds(189, 468, 55, 40);
 		getContentPane().add(copyButton);
 		
 		updateButton = new JButton("");
-		updateButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/update.png")));
-		updateButton.setBounds(271, 452, 50, 35);
+		updateButton.setIcon(new ImageIcon(StockCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/update.png")));
+		updateButton.setBounds(269, 468, 55, 40);
 		getContentPane().add(updateButton);
 		
 		cleanButton = new JButton("");
-		cleanButton.setIcon(new ImageIcon(InternalFrameOperation.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/clean.png")));
-		cleanButton.setBounds(351, 452, 50, 35);
+		cleanButton.setIcon(new ImageIcon(StockCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/clean.png")));
+		cleanButton.setBounds(349, 468, 55, 40);
 		getContentPane().add(cleanButton);
-		
-		jdcCreationDate = new JDateChooser();
-		jdcCreationDate.setBounds(151, 319, 200, 20);
-		getContentPane().add(jdcCreationDate);
 	}
 }

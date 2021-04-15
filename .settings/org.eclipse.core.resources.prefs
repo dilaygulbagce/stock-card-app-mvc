@@ -1,6 +1,4 @@
 eclipse.preferences.version=1
-encoding//src/com/dilaygulbagce/stockCardApplication/controller/ProductController.java=UTF-8
-encoding//src/com/dilaygulbagce/stockCardApplication/model/ProductQueries.java=UTF-8
-encoding//src/com/dilaygulbagce/stockCardApplication/view/InternalFrameList.java=UTF-8
-encoding//src/com/dilaygulbagce/stockCardApplication/view/InternalFrameOperation.java=UTF-8
 encoding//src/com/dilaygulbagce/stockCardApplication/view/MainFrame.java=UTF-8
+encoding//src/com/dilaygulbagce/stockCardApplication/view/StockCardFrame.java=UTF-8
+encoding//src/com/dilaygulbagce/stockCardApplication/view/StockCardListFrame.java=UTF-8
