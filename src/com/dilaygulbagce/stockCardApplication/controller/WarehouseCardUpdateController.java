@@ -14,25 +14,29 @@ public class WarehouseCardUpdateController implements ActionListener {
 
 	private WarehouseCardModel warehouseCardModel;
 	private MainFrame mainFrame;
+	private WarehouseCardControlController controlController;
+	private WarehouseCardCleanController cleanController;
 	
-	public WarehouseCardUpdateController (WarehouseCardModel warehouseCardModel, MainFrame mainFrame) {
+	public WarehouseCardUpdateController (WarehouseCardModel warehouseCardModel, MainFrame mainFrame,
+			WarehouseCardControlController controlController, WarehouseCardCleanController cleanController) {
 		
 		this.warehouseCardModel = warehouseCardModel;
 		this.mainFrame = mainFrame;
+		this.controlController = controlController;
+		this.cleanController = cleanController;
 		
 		this.mainFrame.warehouseCardFrame.updateButton.addActionListener(this);
 	}
 	
-	public void start() {
-		mainFrame.setVisible(true);
-	}
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int dialog = JOptionPane.showConfirmDialog(null, "Güncellemeyi Onaylayınız", "Uyarı", JOptionPane.YES_NO_OPTION);
-		
-		if (dialog == JOptionPane.YES_OPTION) {
-				update();
+		if(controlController.control() == true) {
+			int dialog = JOptionPane.showConfirmDialog(null, "Güncellemeyi Onaylayınız", "Uyarı", JOptionPane.YES_NO_OPTION);
+			
+			if (dialog == JOptionPane.YES_OPTION) {
+					update();
+					cleanController.clean();
+			}
 		}
 	}
 

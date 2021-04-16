@@ -23,10 +23,6 @@ public class StockCardDeleteController implements ActionListener {
 		
 		this.mainFrame.stockCardFrame.deleteButton.addActionListener(this);
 	}
-	
-	public void start() {
-		mainFrame.setVisible(true);
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

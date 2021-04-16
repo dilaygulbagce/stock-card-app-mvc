@@ -27,10 +27,6 @@ public class StockCardSaveController implements ActionListener {
 		
 		this.mainFrame.stockCardFrame.insertButton.addActionListener(this);
 	}
-
-	public void start() {
-		mainFrame.setVisible(true);
-	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {

@@ -15,10 +15,6 @@ public class StockCardCleanController implements ActionListener {
 		
 		this.mainFrame.stockCardFrame.cleanButton.addActionListener(this);
 	}
-	
-	public void start() {
-		mainFrame.setVisible(true);
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

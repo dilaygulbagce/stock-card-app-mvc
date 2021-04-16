@@ -13,20 +13,16 @@ import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
 public class StockCardSearchController implements ActionListener, KeyListener {
 	
-	private StockCardModel productEntiries;
+	private StockCardModel stockCardModel;
 	private MainFrame mainFrame;
 	
-	public StockCardSearchController (StockCardModel productEntiries, MainFrame mainFrame) {
+	public StockCardSearchController (StockCardModel stockCardModel, MainFrame mainFrame) {
 
-		this.productEntiries = productEntiries;
+		this.stockCardModel = stockCardModel;
 		this.mainFrame = mainFrame;
 		
 		this.mainFrame.stockCardFrame.searchButton.addActionListener(this);
 		this.mainFrame.stockCardFrame.tfSearchBar.addKeyListener(this); 
-	}
-	
-	public void start() {
-		mainFrame.setVisible(true);
 	}
 
 	@Override
@@ -49,19 +45,19 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 	}
 	
 	public void search() {
-		productEntiries.setStockCode(mainFrame.stockCardFrame.tfSearchBar.getText().toUpperCase());
+		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfSearchBar.getText().toUpperCase());
 		
 		try {
-			if (productEntiries.search()) {
-				mainFrame.stockCardFrame.tfStockCode.setText(productEntiries.getStockCode());
-				mainFrame.stockCardFrame.tfStockName.setText(productEntiries.getStockName());
-				mainFrame.stockCardFrame.cbWarehouseCode.setSelectedItem(productEntiries.getWarehouseCode());
-				mainFrame.stockCardFrame.cbStockType.setSelectedIndex(productEntiries.getStockType());
-				mainFrame.stockCardFrame.cbUnit.setSelectedItem(productEntiries.getStockUnit());
-				mainFrame.stockCardFrame.tfBarcode.setText(productEntiries.getStockBarcode());
-				mainFrame.stockCardFrame.cbVATType.setSelectedItem(productEntiries.getVatType());
-				mainFrame.stockCardFrame.jdcCreationDate.setDate(productEntiries.getCreationDate());
-				mainFrame.stockCardFrame.taDescription.setText(productEntiries.getDescription());
+			if (stockCardModel.search()) {
+				mainFrame.stockCardFrame.tfStockCode.setText(stockCardModel.getStockCode());
+				mainFrame.stockCardFrame.tfStockName.setText(stockCardModel.getStockName());
+				mainFrame.stockCardFrame.cbWarehouseCode.setSelectedItem(stockCardModel.getWarehouseCode());
+				mainFrame.stockCardFrame.cbStockType.setSelectedIndex(stockCardModel.getStockType());
+				mainFrame.stockCardFrame.cbUnit.setSelectedItem(stockCardModel.getStockUnit());
+				mainFrame.stockCardFrame.tfBarcode.setText(stockCardModel.getStockBarcode());
+				mainFrame.stockCardFrame.cbVATType.setSelectedItem(stockCardModel.getVatType());
+				mainFrame.stockCardFrame.jdcCreationDate.setDate(stockCardModel.getCreationDate());
+				mainFrame.stockCardFrame.taDescription.setText(stockCardModel.getDescription());
 				
 			}
 			else {

@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
 
 	public MainFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1330, 750);
+		setBounds(100, 100, 1500, 1000);
 		
 		setTitle("Ana Ekran");
 		setLocationRelativeTo(null);
@@ -49,19 +49,23 @@ public class MainFrame extends JFrame {
 		desktopPane = new JDesktopPane();
 		desktopPane.setBackground(Color.WHITE);
 		
-		stockCardFrame = new StockCardFrame();
-		desktopPane.add(stockCardFrame);
-		
 		stockCardListFrame = new StockCardListFrame();
+		stockCardListFrame.setLocation(877, 63);
 		desktopPane.add(stockCardListFrame);
 		
 		warehouseCardFrame = new WarehouseCardFrame();
+		warehouseCardFrame.setLocation(6, 6);
 		desktopPane.add(warehouseCardFrame);
 		
 		warehouseCardListFrame = new WarehouseCardListFrame();
+		warehouseCardListFrame.setLocation(6, 349);
 		desktopPane.add(warehouseCardListFrame);
 		
 		getContentPane().add(desktopPane);
+		
+		stockCardFrame = new StockCardFrame();
+		stockCardFrame.setBounds(451, 106, 361, 750);
+		desktopPane.add(stockCardFrame);
 			
 		stockCardMenuItem = new JMenuItem("Stok Kartı İşlemleri");
 		stockMenu.add(stockCardMenuItem);

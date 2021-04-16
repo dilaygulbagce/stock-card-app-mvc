@@ -12,7 +12,6 @@ import java.awt.Color;
 public class StockCardListFrame extends JInternalFrame {
 	
 	public JTable stockCardTable;
-	
 	public JButton listButton;
 
 	public StockCardListFrame() {
@@ -20,17 +19,13 @@ public class StockCardListFrame extends JInternalFrame {
 		setTitle("Stok Kart Listesi");
 		setClosable(true);
 		setResizable(true);
-		setBounds(100, 100, 800, 570);
+		setBounds(100, 100, 750, 745);
 		getContentPane().setLayout(null);
 		
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
-		listButton = new JButton("Listele");
-		listButton.setBounds(681, 6, 89, 23);
-		getContentPane().add(listButton);
-		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 35, 776, 489);
+		scrollPane.setBounds(0, 35, 726, 664);
 		getContentPane().add(scrollPane);
 		
 		stockCardTable = new JTable();
@@ -44,5 +39,9 @@ public class StockCardListFrame extends JInternalFrame {
 			}
 		)
 		);
+		
+		listButton = new JButton("Listele");
+		listButton.setBounds(631, 6, 89, 23);
+		getContentPane().add(listButton);
 	}
 }

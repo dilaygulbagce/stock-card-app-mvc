@@ -14,23 +14,27 @@ public class WarehouseCardSaveController implements ActionListener {
 	
 	private WarehouseCardModel warehouseCardModel;
 	private MainFrame mainFrame;
+	private WarehouseCardControlController controlController;
+	private WarehouseCardCleanController cleanController;
 	
-	public WarehouseCardSaveController (WarehouseCardModel warehouseCardModel, MainFrame mainFrame) {
+	public WarehouseCardSaveController (WarehouseCardModel warehouseCardModel, MainFrame mainFrame,
+			WarehouseCardControlController controlController, WarehouseCardCleanController cleanController) {
 		
 		this.warehouseCardModel = warehouseCardModel;
 		this.mainFrame = mainFrame;
+		this.controlController = controlController;
+		this.cleanController = cleanController;
 		
 		this.mainFrame.warehouseCardFrame.insertButton.addActionListener(this);
-	}
-	
-	public void start() {
-		mainFrame.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.warehouseCardFrame.insertButton) {
-			insert();
+			if(controlController.control() == true) {
+				insert();
+				cleanController.clean();
+			}
 		}
 	}
 	

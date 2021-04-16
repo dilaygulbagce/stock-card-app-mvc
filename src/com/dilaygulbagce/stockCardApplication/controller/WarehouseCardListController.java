@@ -27,11 +27,7 @@ public class WarehouseCardListController implements ActionListener, InternalFram
 		this.mainFrame.warehouseCardListFrame.listButton.addActionListener(this);
 		this.mainFrame.warehouseCardListFrame.addInternalFrameListener(this);
 	}
-	
-	public void start() {
-		mainFrame.setVisible(true);
-	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.warehouseCardListFrame.listButton) {

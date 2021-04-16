@@ -27,11 +27,7 @@ public class StockCardListController implements ActionListener, InternalFrameLis
 		this.mainFrame.stockCardListFrame.listButton.addActionListener(this);
 		this.mainFrame.stockCardListFrame.addInternalFrameListener(this);
 	}
-	
-	public void start() {
-		mainFrame.setVisible(true);
-	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.stockCardListFrame.listButton) {

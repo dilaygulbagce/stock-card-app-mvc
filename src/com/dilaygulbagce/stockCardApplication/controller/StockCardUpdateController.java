@@ -28,10 +28,6 @@ public class StockCardUpdateController implements ActionListener {
 		this.mainFrame.stockCardFrame.updateButton.addActionListener(this);
 	}
 	
-	public void start() {
-		mainFrame.setVisible(true);
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.stockCardFrame.updateButton) {

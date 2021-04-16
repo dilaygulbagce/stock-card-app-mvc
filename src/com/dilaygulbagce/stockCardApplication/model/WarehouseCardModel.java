@@ -149,7 +149,7 @@ public class WarehouseCardModel {
 		}
 	}
 	
-public boolean update() throws SQLException {
+	public boolean update() throws SQLException {
 		
 		PreparedStatement preparedStatement = null;
 		Connection connect = databaseConnection.getConnection();
@@ -178,5 +178,72 @@ public boolean update() throws SQLException {
 				System.err.println(exception);
 			}
 		}
+	}
+	
+	public boolean search() throws SQLException {
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		Connection connect = databaseConnection.getConnection();
+		
+		String sql = "SELECT * FROM warehouse_card WHERE warehouse_code = ?";
+		
+		try {
+			preparedStatement = connect.prepareStatement(sql);
+			
+			preparedStatement.setString(1, getWarehouseCode());
+			resultSet = preparedStatement.executeQuery();
+			
+			if (resultSet.next()) {
+				setWarehouseCode(resultSet.getString("warehouse_code"));
+				setWarehouseName(resultSet.getString("warehouse_name"));
+				setWarehouseDescription(resultSet.getString("warehouse_description"));
+				
+				return true;
+			}
+			return false;
+		} catch (SQLException exception) {
+			System.err.println(exception);
+			return false;
+			
+		} finally {
+			try {
+				connect.close();
+				
+			} catch (SQLException exception) {
+				System.err.println(exception);
+			}
+		}
+	}
+	
+	public ArrayList<String> fillWarehouseCodeCombobox() throws SQLException {
+		
+		PreparedStatement preparedStatement = null;
+		Connection connect = databaseConnection.getConnection();
+		ResultSet resultSet = null;
+			
+		ArrayList<String> warehouseCodeList = new ArrayList<String>();
+		warehouseCodeList.add(null);
+			
+		String sql = "SELECT warehouse_code FROM warehouse_card";
+	
+		try {
+			preparedStatement = connect.prepareStatement(sql);
+			resultSet = preparedStatement.executeQuery();
+				
+			while(resultSet.next()) {					
+				warehouseCodeList.add(resultSet.getString("warehouse_code"));
+			}
+			return warehouseCodeList;
+		} catch (SQLException exception) {
+			System.err.println(exception);
+			return null;
+		} finally {
+			try {
+				connect.close();
+			} catch (SQLException exception) {
+				System.err.println(exception);
+			}
+		}			
 	}
 }

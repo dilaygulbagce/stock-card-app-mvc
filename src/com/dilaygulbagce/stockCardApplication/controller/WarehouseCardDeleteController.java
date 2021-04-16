@@ -13,19 +13,18 @@ public class WarehouseCardDeleteController implements ActionListener {
 	
 	private WarehouseCardModel warehouseCardModel;
 	private MainFrame mainFrame;
+	private WarehouseCardCleanController cleanController;
 	
-	public WarehouseCardDeleteController (WarehouseCardModel warehouseCardModel, MainFrame mainFrame) {
+	public WarehouseCardDeleteController (WarehouseCardModel warehouseCardModel, MainFrame mainFrame, 
+			WarehouseCardCleanController cleanController) {
 		
 		this.warehouseCardModel = warehouseCardModel;
 		this.mainFrame = mainFrame;
+		this.cleanController = cleanController;
 		
 		this.mainFrame.warehouseCardFrame.deleteButton.addActionListener(this);
 	}
 	
-	public void start() {
-		mainFrame.setVisible(true);
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.warehouseCardFrame.deleteButton) {
@@ -37,6 +36,7 @@ public class WarehouseCardDeleteController implements ActionListener {
 				
 				if (dialog == JOptionPane.YES_OPTION) {
 					delete();
+					cleanController.clean();
 				}
 			}
 		}

@@ -11,26 +11,22 @@ import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
 public class StockCardCopyController implements ActionListener {
 
-	private StockCardModel productEntiries;
+	private StockCardModel stockCardModel;
 	private MainFrame mainFrame;
 	private StockCardControlController controlController;
 	private StockCardCleanController cleanController;
 	
-	public StockCardCopyController (StockCardModel productEntiries, MainFrame mainFrame, 
+	public StockCardCopyController (StockCardModel stockCardModel, MainFrame mainFrame, 
 			StockCardControlController controlController, StockCardCleanController cleanController) {
 		
-		this.productEntiries = productEntiries;
+		this.stockCardModel = stockCardModel;
 		this.mainFrame = mainFrame;
 		this.controlController = controlController;
 		this.cleanController = cleanController;
 		
 		this.mainFrame.stockCardFrame.copyButton.addActionListener(this);
 	}
-	
-	public void start() {
-		mainFrame.setVisible(true);
-	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.stockCardFrame.copyButton) {
@@ -48,10 +44,10 @@ public class StockCardCopyController implements ActionListener {
 	}
 	
 	public void copy() {
-		productEntiries.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
+		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
 		
 		try {
-			if (productEntiries.copy()) {
+			if (stockCardModel.copy()) {
 				JOptionPane.showMessageDialog(null, "Kopyalama İşlemi Başarılı!");
 			}
 			else {
