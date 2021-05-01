@@ -10,9 +10,8 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class WarehouseCardListFrame extends JInternalFrame {
 	
 	public JTable warehouseCardTable;
@@ -45,10 +44,6 @@ public class WarehouseCardListFrame extends JInternalFrame {
 		));
 		
 		listButton = new JButton("Listele");
-		listButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		listButton.setBounds(197, 6, 110, 29);
 		getContentPane().add(listButton);
 	}

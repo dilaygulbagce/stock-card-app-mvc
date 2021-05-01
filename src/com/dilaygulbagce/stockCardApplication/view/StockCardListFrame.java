@@ -5,28 +5,30 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.border.LineBorder;
-import java.awt.Color;
+import javax.swing.table.DefaultTableModel;
 
+import java.awt.Color;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+
+@SuppressWarnings("serial")
 public class StockCardListFrame extends JInternalFrame {
 	
 	public JTable stockCardTable;
 	public JButton listButton;
 
 	public StockCardListFrame() {
+		setMaximizable(true);
 		setIconifiable(true);
 		setTitle("Stok Kart Listesi");
 		setClosable(true);
 		setResizable(true);
 		setBounds(100, 100, 750, 745);
-		getContentPane().setLayout(null);
 		
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 35, 726, 664);
-		getContentPane().add(scrollPane);
 		
 		stockCardTable = new JTable();
 		scrollPane.setViewportView(stockCardTable);
@@ -41,7 +43,23 @@ public class StockCardListFrame extends JInternalFrame {
 		);
 		
 		listButton = new JButton("Listele");
-		listButton.setBounds(631, 6, 89, 23);
-		getContentPane().add(listButton);
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addGap(631)
+					.addComponent(listButton, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+					.addGap(6))
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 726, Short.MAX_VALUE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(6)
+					.addComponent(listButton, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+					.addGap(6)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 664, Short.MAX_VALUE))
+		);
+		getContentPane().setLayout(groupLayout);
 	}
 }

@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
-public class StockCardCleanController implements ActionListener {
+public class StockCardEntryCleanController implements ActionListener {
 	
 	private MainFrame mainFrame;
 	
-	public StockCardCleanController (MainFrame mainFrame) {
+	public StockCardEntryCleanController (MainFrame mainFrame) {
 
 		this.mainFrame = mainFrame;
 		
@@ -21,7 +21,6 @@ public class StockCardCleanController implements ActionListener {
 		if (e.getSource() == mainFrame.stockCardFrame.cleanButton) {
 			clean();
 		}
-		
 	}
 	
 	public void clean() {

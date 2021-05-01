@@ -32,6 +32,7 @@ public class WarehouseCardListController implements ActionListener, InternalFram
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.warehouseCardListFrame.listButton) {
 			list();
+			mainFrame.warehouseCardListFrame.listButton.setText("Yenile");
 		}
 	}
 	
@@ -39,6 +40,8 @@ public class WarehouseCardListController implements ActionListener, InternalFram
 	public void internalFrameClosing(InternalFrameEvent e) {
 		DefaultTableModel recordTable = (DefaultTableModel) mainFrame.warehouseCardListFrame.warehouseCardTable.getModel();
         recordTable.setRowCount(0);
+        
+		mainFrame.warehouseCardListFrame.listButton.setText("Listele");
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

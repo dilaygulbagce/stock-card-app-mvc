@@ -4,11 +4,11 @@ import javax.swing.JOptionPane;
 
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
-public class WarehouseCardControlController {
+public class WarehouseCardEntryControlController {
 	
 	private MainFrame mainFrame;
 
-	public WarehouseCardControlController (MainFrame mainFrame) {
+	public WarehouseCardEntryControlController (MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 	}
 	

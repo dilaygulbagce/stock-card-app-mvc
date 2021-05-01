@@ -29,7 +29,7 @@ public class WarehouseCardSearchController implements ActionListener, KeyListene
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.warehouseCardFrame.searchButton) {
 			if (mainFrame.warehouseCardFrame.tfSearchBar.getText().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Aranacak Kaydın Stok Kodunu Giriniz");
+				JOptionPane.showMessageDialog(null, "Aranacak Kaydın Depo Kodunu Giriniz");
 			}
 			else {
 				search();
@@ -40,7 +40,12 @@ public class WarehouseCardSearchController implements ActionListener, KeyListene
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			search();
+			if (mainFrame.warehouseCardFrame.tfSearchBar.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Aranacak Kaydın Depo Kodunu Giriniz");
+			}
+			else {
+				search();
+			}
 		}
 	}
 	
@@ -73,5 +78,4 @@ public class WarehouseCardSearchController implements ActionListener, KeyListene
 		// TODO Auto-generated method stub
 		
 	}
-
 }

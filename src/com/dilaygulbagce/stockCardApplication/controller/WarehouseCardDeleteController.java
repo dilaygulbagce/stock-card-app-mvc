@@ -13,10 +13,10 @@ public class WarehouseCardDeleteController implements ActionListener {
 	
 	private WarehouseCardModel warehouseCardModel;
 	private MainFrame mainFrame;
-	private WarehouseCardCleanController cleanController;
+	private WarehouseCardEntryCleanController cleanController;
 	
 	public WarehouseCardDeleteController (WarehouseCardModel warehouseCardModel, MainFrame mainFrame, 
-			WarehouseCardCleanController cleanController) {
+			WarehouseCardEntryCleanController cleanController) {
 		
 		this.warehouseCardModel = warehouseCardModel;
 		this.mainFrame = mainFrame;
@@ -36,6 +36,7 @@ public class WarehouseCardDeleteController implements ActionListener {
 				
 				if (dialog == JOptionPane.YES_OPTION) {
 					delete();
+					new WarehouseCodeComboboxController(warehouseCardModel, mainFrame);
 					cleanController.clean();
 				}
 			}
@@ -56,5 +57,4 @@ public class WarehouseCardDeleteController implements ActionListener {
 			e.printStackTrace();
 		}
 	}
-
 }

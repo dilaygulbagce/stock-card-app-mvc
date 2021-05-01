@@ -10,9 +10,10 @@ import javax.swing.JTextArea;
 import javax.swing.ImageIcon;
 
 import com.toedter.calendar.JDateChooser;
-
+import com.dilaygulbagce.stockCardApplication.model.StockCardModel;
 import com.dilaygulbagce.stockCardApplication.utility.EntryLimit;
 
+@SuppressWarnings("serial")
 public class StockCardFrame extends JInternalFrame {
 	
 	public JTextField tfSearchBar;
@@ -65,7 +66,7 @@ public class StockCardFrame extends JInternalFrame {
 		tfStockCode = new JTextField();
 		tfStockCode.setColumns(10);
 		tfStockCode.setBounds(128, 106, 200, 20);
-		tfStockCode.setDocument(new EntryLimit(50));
+		tfStockCode.setDocument(new EntryLimit(StockCardModel.STOCK_CODE_LIMIT));
 		getContentPane().add(tfStockCode);
 		
 		JLabel lblNewLabel_1 = new JLabel("Stok Adı:");

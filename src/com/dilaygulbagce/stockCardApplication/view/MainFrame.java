@@ -1,9 +1,7 @@
 package com.dilaygulbagce.stockCardApplication.view;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
-import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -12,8 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuItem;
 import java.awt.Color;
-import java.awt.Toolkit;
 
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;

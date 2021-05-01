@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
-public class WarehouseCardCleanController implements ActionListener {
+public class WarehouseCardEntryCleanController implements ActionListener {
 
 	private MainFrame mainFrame;
 	
-	public WarehouseCardCleanController (MainFrame mainFrame) {
+	public WarehouseCardEntryCleanController (MainFrame mainFrame) {
 
 		this.mainFrame = mainFrame;
 		

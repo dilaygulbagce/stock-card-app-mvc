@@ -13,9 +13,10 @@ public class StockCardDeleteController implements ActionListener {
 
 	private StockCardModel stockCardModel;
 	private MainFrame mainFrame;
-	private StockCardCleanController cleanController;
+	private StockCardEntryCleanController cleanController;
 
-	public StockCardDeleteController (StockCardModel stockCardModel, MainFrame mainFrame, StockCardCleanController cleanController) {
+	public StockCardDeleteController (StockCardModel stockCardModel, MainFrame mainFrame, 
+			StockCardEntryCleanController cleanController) {
 		
 		this.stockCardModel = stockCardModel;
 		this.mainFrame = mainFrame;

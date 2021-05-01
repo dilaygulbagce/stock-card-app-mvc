@@ -3,6 +3,7 @@ package com.dilaygulbagce.stockCardApplication.utility;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+@SuppressWarnings("serial")
 public class EntryLimit extends PlainDocument{
 
 	private int limit;

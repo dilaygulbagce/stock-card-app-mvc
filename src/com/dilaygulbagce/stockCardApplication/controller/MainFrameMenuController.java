@@ -27,19 +27,18 @@ public class MainFrameMenuController implements ActionListener{
 		}
 		
 		if (e.getSource() == mainFrame.stockCardListMenuItem) {
-			mainFrame.stockCardListFrame.setLocation(360, 5);
+			mainFrame.stockCardListFrame.setLocation(350, 5);
 			mainFrame.stockCardListFrame.setVisible(true);
 		}
 		
 		if (e.getSource() == mainFrame.warehouseCardMenuItem) {
-			mainFrame.warehouseCardFrame.setLocation(1100, 5);
+			mainFrame.warehouseCardFrame.setLocation(1090, 5);
 			mainFrame.warehouseCardFrame.setVisible(true);
 		}
 		
 		if (e.getSource() == mainFrame.warehouseCardListMenuItem) {
-			mainFrame.warehouseCardListFrame.setLocation(1100, 340);
+			mainFrame.warehouseCardListFrame.setLocation(1090, 340);
 			mainFrame.warehouseCardListFrame.setVisible(true);
 		}
 	}
-
 }

@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-	private Connection connect = null;
+	private static Connection connect = null;
 		
-		public Connection getConnection() throws SQLException {
+		public static Connection getConnection() throws SQLException {
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				connect = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:8889/stock_card?useUnicode=true&characterEncoding=UTF8", "root", "root");

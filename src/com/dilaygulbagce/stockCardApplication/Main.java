@@ -14,7 +14,6 @@ public class Main {
 		MainFrame mainFrame = new MainFrame();
 		
 		MainController mainController = new MainController(stockCardModel, warehouseCardModel, mainFrame);
-		
 		mainController.start();
  	}
 }

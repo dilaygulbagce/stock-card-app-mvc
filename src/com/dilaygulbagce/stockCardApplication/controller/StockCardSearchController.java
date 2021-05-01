@@ -40,7 +40,12 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			search();
+			if (mainFrame.stockCardFrame.tfSearchBar.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Aranacak Kaydın Stok Kodunu Giriniz");
+			}
+			else {
+				search();
+			}
 		}
 	}
 	
@@ -79,5 +84,4 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

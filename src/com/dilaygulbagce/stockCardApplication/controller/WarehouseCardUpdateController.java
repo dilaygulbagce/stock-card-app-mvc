@@ -2,7 +2,6 @@ package com.dilaygulbagce.stockCardApplication.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
@@ -14,11 +13,11 @@ public class WarehouseCardUpdateController implements ActionListener {
 
 	private WarehouseCardModel warehouseCardModel;
 	private MainFrame mainFrame;
-	private WarehouseCardControlController controlController;
-	private WarehouseCardCleanController cleanController;
+	private WarehouseCardEntryControlController controlController;
+	private WarehouseCardEntryCleanController cleanController;
 	
 	public WarehouseCardUpdateController (WarehouseCardModel warehouseCardModel, MainFrame mainFrame,
-			WarehouseCardControlController controlController, WarehouseCardCleanController cleanController) {
+			WarehouseCardEntryControlController controlController, WarehouseCardEntryCleanController cleanController) {
 		
 		this.warehouseCardModel = warehouseCardModel;
 		this.mainFrame = mainFrame;
@@ -35,6 +34,7 @@ public class WarehouseCardUpdateController implements ActionListener {
 			
 			if (dialog == JOptionPane.YES_OPTION) {
 					update();
+					new WarehouseCodeComboboxController(warehouseCardModel, mainFrame);
 					cleanController.clean();
 			}
 		}
@@ -56,5 +56,4 @@ public class WarehouseCardUpdateController implements ActionListener {
 			e.printStackTrace();
 		}
 	}
-
 }

@@ -32,6 +32,7 @@ public class StockCardListController implements ActionListener, InternalFrameLis
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.stockCardListFrame.listButton) {
 			list();
+			mainFrame.stockCardListFrame.listButton.setText("Yenile");
 		}
 	}
 	
@@ -39,10 +40,15 @@ public class StockCardListController implements ActionListener, InternalFrameLis
 	public void internalFrameClosing(InternalFrameEvent e) {
 		DefaultTableModel recordTable = (DefaultTableModel) mainFrame.stockCardListFrame.stockCardTable.getModel();
         recordTable.setRowCount(0);
+        
+        mainFrame.stockCardListFrame.setBounds(100, 100, 750, 745);
+		mainFrame.stockCardListFrame.listButton.setText("Listele");
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void list() {
 		try {
+			@SuppressWarnings("rawtypes")
 			ArrayList<Vector> stockCardList = stockCardModel.list();
 			
 			if (stockCardList != null) {

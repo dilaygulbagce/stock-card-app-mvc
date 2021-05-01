@@ -4,11 +4,11 @@ import javax.swing.JOptionPane;
 
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
-public class StockCardControlController {
+public class StockCardEntryControlController {
 
 	private MainFrame mainFrame;
 	
-	public StockCardControlController (MainFrame mainFrame) {
+	public StockCardEntryControlController (MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
 	}
 	
@@ -52,8 +52,6 @@ public class StockCardControlController {
             JOptionPane.showMessageDialog(null, "Oluşturma Tarihi Alanı Boş Bırakılamaz");
             return false;
         }
-		
 		return true;
 	}
-	
 }

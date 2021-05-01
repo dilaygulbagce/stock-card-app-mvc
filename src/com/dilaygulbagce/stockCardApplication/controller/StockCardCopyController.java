@@ -13,11 +13,11 @@ public class StockCardCopyController implements ActionListener {
 
 	private StockCardModel stockCardModel;
 	private MainFrame mainFrame;
-	private StockCardControlController controlController;
-	private StockCardCleanController cleanController;
+	private StockCardEntryControlController controlController;
+	private StockCardEntryCleanController cleanController;
 	
 	public StockCardCopyController (StockCardModel stockCardModel, MainFrame mainFrame, 
-			StockCardControlController controlController, StockCardCleanController cleanController) {
+			StockCardEntryControlController controlController, StockCardEntryCleanController cleanController) {
 		
 		this.stockCardModel = stockCardModel;
 		this.mainFrame = mainFrame;
@@ -40,7 +40,6 @@ public class StockCardCopyController implements ActionListener {
 				}
 			}
 		}
-		
 	}
 	
 	public void copy() {

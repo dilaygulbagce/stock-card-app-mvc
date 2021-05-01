@@ -1,6 +1,5 @@
 package com.dilaygulbagce.stockCardApplication.model;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -11,9 +10,7 @@ import java.util.Vector;
 import com.dilaygulbagce.stockCardApplication.utility.DatabaseConnection;
 
 public class WarehouseCardModel {
-	
-	private DatabaseConnection databaseConnection = new DatabaseConnection();
-	
+		
 	private String warehouseID;
 	private String warehouseCode;
 	private String warehouseName;
@@ -46,19 +43,17 @@ public class WarehouseCardModel {
 	
 	@SuppressWarnings("rawtypes")
 	public ArrayList<Vector> list() throws SQLException {
-		
-		PreparedStatement preparedStatement = null;
-		Connection connect = databaseConnection.getConnection();
+	
 		ResultSet resultSet = null;
 			
 		ArrayList<Vector> warehouseCardList = new ArrayList<Vector>();
 			
 		String sql = "SELECT * FROM warehouse_card";
 	
-		try {
-			preparedStatement = connect.prepareStatement(sql);
-			resultSet = preparedStatement.executeQuery();
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
 				
+			resultSet = preparedStatement.executeQuery();
+			
 			ResultSetMetaData stData = resultSet.getMetaData();
 				
 			int dbColumnCount;
@@ -76,28 +71,21 @@ public class WarehouseCardModel {
 				warehouseCardList.add(columnData);
 			}
 			return warehouseCardList;
+			
 		} catch (SQLException exception) {
 			System.err.println(exception);
 			return null;
 		} finally {
-			try {
-				connect.close();
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}
 	}
 
 	public boolean insert() throws SQLException {
 		
-		PreparedStatement preparedStatement = null;
-		Connection connect = databaseConnection.getConnection();
-		
 		String sql = "INSERT INTO warehouse_card (warehouse_id, warehouse_code, warehouse_name, warehouse_description) "
 				+ "VALUES (?, ?, ?, ?)";
 
-		try {
-			preparedStatement = connect.prepareStatement(sql);
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
 			
 			preparedStatement.setString(1, getWarehouseID());
 			preparedStatement.setString(2, getWarehouseCode());
@@ -110,25 +98,16 @@ public class WarehouseCardModel {
 		} catch (SQLException exception) {
 			System.err.println(exception);
 			return false;
-			
 		} finally {
-			try {
-				connect.close();
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}
 	}
 	
 	public boolean delete() throws SQLException {
-		
-		PreparedStatement preparedStatement = null;
-		Connection connect = databaseConnection.getConnection();
-		
+				
 		String sql = "DELETE FROM warehouse_card WHERE warehouse_code = ?";
 		
-		try {
-			preparedStatement = connect.prepareStatement(sql);
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
 			
 			preparedStatement.setString(1, getWarehouseCode());
 			preparedStatement.execute();
@@ -138,26 +117,16 @@ public class WarehouseCardModel {
 		} catch (SQLException exception) {
 			System.err.println(exception);
 			return false;
-			
 		} finally {
-			try {
-				connect.close();
-				
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}
 	}
 	
 	public boolean update() throws SQLException {
-		
-		PreparedStatement preparedStatement = null;
-		Connection connect = databaseConnection.getConnection();
-		
+				
 		String sql = "UPDATE warehouse_card SET warehouse_name = ?, warehouse_description = ? WHERE warehouse_code = ?";
 		
-		try {
-			preparedStatement = connect.prepareStatement(sql);
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
 			
 			preparedStatement.setString(1, getWarehouseName());
 			preparedStatement.setString(2, getWarehouseDescription());
@@ -169,27 +138,18 @@ public class WarehouseCardModel {
 		} catch (SQLException exception) {
 			System.err.println(exception);
 			return false;
-			
 		} finally {
-			try {
-				connect.close();
-				
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}
 	}
 	
 	public boolean search() throws SQLException {
 		
-		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		Connection connect = databaseConnection.getConnection();
 		
 		String sql = "SELECT * FROM warehouse_card WHERE warehouse_code = ?";
 		
-		try {
-			preparedStatement = connect.prepareStatement(sql);
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
 			
 			preparedStatement.setString(1, getWarehouseCode());
 			resultSet = preparedStatement.executeQuery();
@@ -205,21 +165,13 @@ public class WarehouseCardModel {
 		} catch (SQLException exception) {
 			System.err.println(exception);
 			return false;
-			
 		} finally {
-			try {
-				connect.close();
-				
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}
 	}
 	
 	public ArrayList<String> fillWarehouseCodeCombobox() throws SQLException {
 		
-		PreparedStatement preparedStatement = null;
-		Connection connect = databaseConnection.getConnection();
 		ResultSet resultSet = null;
 			
 		ArrayList<String> warehouseCodeList = new ArrayList<String>();
@@ -227,8 +179,7 @@ public class WarehouseCardModel {
 			
 		String sql = "SELECT warehouse_code FROM warehouse_card";
 	
-		try {
-			preparedStatement = connect.prepareStatement(sql);
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
 			resultSet = preparedStatement.executeQuery();
 				
 			while(resultSet.next()) {					
@@ -239,11 +190,7 @@ public class WarehouseCardModel {
 			System.err.println(exception);
 			return null;
 		} finally {
-			try {
-				connect.close();
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}			
 	}
 }

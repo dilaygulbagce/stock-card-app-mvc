@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 
+@SuppressWarnings("serial")
 public class WarehouseCardFrame extends JInternalFrame {
 	
 	public JTextField tfSearchBar;

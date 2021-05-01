@@ -17,9 +17,10 @@ public class MainController {
 		this.warehouseCardModel = warehouseCardModel;
 		this.mainFrame = mainFrame;
 		
-		StockCardControlController scControlController = new StockCardControlController(mainFrame);
-		StockCardCleanController scCleanController = new StockCardCleanController(mainFrame);
 		new MainFrameMenuController(mainFrame);
+		
+		StockCardEntryControlController scControlController = new StockCardEntryControlController(mainFrame);
+		StockCardEntryCleanController scCleanController = new StockCardEntryCleanController(mainFrame);
 		new StockCardSaveController(stockCardModel, mainFrame, scControlController, scCleanController);
 		new StockCardDeleteController(stockCardModel, mainFrame, scCleanController);
 		new StockCardUpdateController(stockCardModel, mainFrame, scControlController, scCleanController);
@@ -27,8 +28,8 @@ public class MainController {
 		new StockCardSearchController(stockCardModel, mainFrame);
 		new StockCardListController(stockCardModel, mainFrame);
 		
-		WarehouseCardControlController wcControlController = new WarehouseCardControlController(mainFrame);
-		WarehouseCardCleanController wcCleanController = new WarehouseCardCleanController(mainFrame);
+		WarehouseCardEntryControlController wcControlController = new WarehouseCardEntryControlController(mainFrame);
+		WarehouseCardEntryCleanController wcCleanController = new WarehouseCardEntryCleanController(mainFrame);
 		new WarehouseCardListController(warehouseCardModel, mainFrame);
 		new WarehouseCardSaveController(warehouseCardModel, mainFrame, wcControlController, wcCleanController);
 		new WarehouseCardDeleteController(warehouseCardModel, mainFrame, wcCleanController);

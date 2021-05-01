@@ -1,6 +1,5 @@
 package com.dilaygulbagce.stockCardApplication.model;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,8 +15,6 @@ import com.dilaygulbagce.stockCardApplication.utility.DatabaseConnection;
 
 public class StockCardModel {
 	
-	private DatabaseConnection databaseConnection = new DatabaseConnection();
-	
 	private String stockCode;
 	private String stockName;
 	private String warehouseCode;
@@ -27,6 +24,8 @@ public class StockCardModel {
 	private Double vatType;
 	private Date creationDate;
 	private String description;
+	
+	public static final int STOCK_CODE_LIMIT = 50;
 	
 	public String getStockCode() {
 		return stockCode;
@@ -117,16 +116,14 @@ public class StockCardModel {
 	@SuppressWarnings("rawtypes")
 	public ArrayList<Vector> list() throws SQLException {
 		
-		PreparedStatement preparedStatement = null;
-		Connection connect = databaseConnection.getConnection();
 		ResultSet resultSet = null;
 			
 		ArrayList<Vector> stockCardList = new ArrayList<Vector>();
 			
 		String sql = "SELECT * FROM stock_card";
 	
-		try {
-			preparedStatement = connect.prepareStatement(sql);
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
+			
 			resultSet = preparedStatement.executeQuery();
 				
 			ResultSetMetaData stData = resultSet.getMetaData();
@@ -156,24 +153,16 @@ public class StockCardModel {
 			System.err.println(exception);
 			return null;
 		} finally {
-			try {
-				connect.close();
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}
 	}
 	
 	public boolean insert() throws SQLException {
 		
-		PreparedStatement preparedStatement = null;
-		Connection connect = databaseConnection.getConnection();
-		
 		String sql = "INSERT INTO stock_card (stock_code, stock_name, warehouse_code, stock_type, stock_unit, "
 				+ "stock_barcode, stock_vat_type, stock_creation_date, stock_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-		try {
-			preparedStatement = connect.prepareStatement(sql);
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
 			
 			preparedStatement.setString(1, getStockCode());
 			preparedStatement.setString(2, getStockName());
@@ -191,25 +180,16 @@ public class StockCardModel {
 		} catch (SQLException exception) {
 			System.err.println(exception);
 			return false;
-			
 		} finally {
-			try {
-				connect.close();
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}
 	}
 	
 	public boolean delete() throws SQLException {
 		
-		PreparedStatement preparedStatement = null;
-		Connection connect = databaseConnection.getConnection();
-		
 		String sql = "DELETE FROM stock_card WHERE stock_code = ?";
 		
-		try {
-			preparedStatement = connect.prepareStatement(sql);
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
 			
 			preparedStatement.setString(1, getStockCode());
 			preparedStatement.execute();
@@ -219,27 +199,17 @@ public class StockCardModel {
 		} catch (SQLException exception) {
 			System.err.println(exception);
 			return false;
-			
 		} finally {
-			try {
-				connect.close();
-				
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}
 	}
 	
 	public boolean update() throws SQLException {
-		
-		PreparedStatement preparedStatement = null;
-		Connection connect = databaseConnection.getConnection();
-		
+
 		String sql = "UPDATE stock_card.stock_card SET stock_name = ?, stock_type = ?, warehouse_code = ?, stock_unit = ?, "
 				+ "stock_barcode = ?, stock_vat_type = ?, stock_creation_date = ?, stock_description = ? WHERE stock_code = ?";
 		
-		try {
-			preparedStatement = connect.prepareStatement(sql);
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
 			
 			preparedStatement.setString(1, getStockName());
 			preparedStatement.setInt(2, getStockType());
@@ -257,20 +227,12 @@ public class StockCardModel {
 		} catch (SQLException exception) {
 			System.err.println(exception);
 			return false;
-			
 		} finally {
-			try {
-				connect.close();
-				
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}
 	}
 	
 	public boolean copy() throws SQLException {
-		PreparedStatement preparedStatement = null;
-		Connection connect = databaseConnection.getConnection();
 		
 		String stockCode = getStockCode();
 		
@@ -280,10 +242,8 @@ public class StockCardModel {
                 + "SELECT ?, stock_name, warehouse_code, stock_type, stock_unit, stock_barcode, stock_vat_type, stock_creation_date, stock_description FROM stock_card WHERE stock_code = ?";
 		
 		if(copyItem!= null) {
-			try {
-		
-				preparedStatement = connect.prepareStatement(sql);
-			
+			try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
+				
 				preparedStatement.setString(1, copyItem);
 				preparedStatement.setString(2, stockCode);
 	        
@@ -293,14 +253,8 @@ public class StockCardModel {
 			} catch (SQLException exception) {
 				System.err.println(exception);
 				return false;
-			
 			} finally {
-				try {
-					connect.close();
-				
-				} catch (SQLException exception) {
-					System.err.println(exception);
-				}
+				DatabaseConnection.getConnection().close();
 			}
 		}
 		return false;
@@ -308,14 +262,11 @@ public class StockCardModel {
 	
 	public boolean search() throws SQLException {
 		
-		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		Connection connect = databaseConnection.getConnection();
 		
 		String sql = "SELECT * FROM stock_card WHERE stock_code = ?";
 		
-		try {
-			preparedStatement = connect.prepareStatement(sql);
+		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
 			
 			preparedStatement.setString(1, getStockCode());
 			resultSet = preparedStatement.executeQuery();
@@ -337,14 +288,8 @@ public class StockCardModel {
 		} catch (SQLException exception) {
 			System.err.println(exception);
 			return false;
-			
 		} finally {
-			try {
-				connect.close();
-				
-			} catch (SQLException exception) {
-				System.err.println(exception);
-			}
+			DatabaseConnection.getConnection().close();
 		}
 	}
 }
