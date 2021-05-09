@@ -2,9 +2,7 @@ package com.dilaygulbagce.stockCardApplication.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameEvent;
@@ -18,11 +16,14 @@ public class WarehouseCardListController implements ActionListener, InternalFram
 	
 	private WarehouseCardModel warehouseCardModel;
 	private MainFrame mainFrame;
+	private WarehouseCardListCleanController cleanController;
 	
-	public WarehouseCardListController (WarehouseCardModel warehouseCardModel, MainFrame mainFrame) {
+	public WarehouseCardListController (WarehouseCardModel warehouseCardModel, MainFrame mainFrame, 
+			WarehouseCardListCleanController cleanController) {
 		
 		this.warehouseCardModel = warehouseCardModel;
 		this.mainFrame = mainFrame;
+		this.cleanController = cleanController;
 		
 		this.mainFrame.warehouseCardListFrame.listButton.addActionListener(this);
 		this.mainFrame.warehouseCardListFrame.addInternalFrameListener(this);
@@ -31,6 +32,7 @@ public class WarehouseCardListController implements ActionListener, InternalFram
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.warehouseCardListFrame.listButton) {
+			cleanController.cleanList();
 			list();
 			mainFrame.warehouseCardListFrame.listButton.setText("Yenile");
 		}
@@ -46,22 +48,23 @@ public class WarehouseCardListController implements ActionListener, InternalFram
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void list() {
-		try {
-			ArrayList<Vector> warehouseCardList = warehouseCardModel.list();
+		List<WarehouseCardModel> warehouseCardList = warehouseCardModel.list("");
+
+		if (warehouseCardList != null) {
+			DefaultTableModel recordTable = (DefaultTableModel) mainFrame.warehouseCardListFrame.warehouseCardTable.getModel();
+
+			Object[] row = new Object[4];
 			
-			if (warehouseCardList != null) {
-				DefaultTableModel recordTable = (DefaultTableModel) mainFrame.warehouseCardListFrame.warehouseCardTable.getModel();
-	            recordTable.setRowCount(0);
-	      
-	            for (Vector<String> s : warehouseCardList) {
-	                   recordTable.addRow(s);
-	            }
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Hata!");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			warehouseCardList.forEach(e -> {
+				row[0] = e.getWarehouseID();
+				row[1] = e.getWarehouseCode();
+				row[2] = e.getWarehouseName();
+				row[3] = e.getWarehouseDescription();
+				recordTable.addRow(row);
+			});
+			
+		} else {
+			JOptionPane.showMessageDialog(null, "Hata!");
 		}
 	}
 

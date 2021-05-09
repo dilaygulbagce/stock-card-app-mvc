@@ -1,32 +1,77 @@
 package com.dilaygulbagce.stockCardApplication.model;
 
+import java.io.Serializable;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.swing.JOptionPane;
 
-import com.dilaygulbagce.stockCardApplication.utility.DatabaseConnection;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
-public class StockCardModel {
-	
+import com.dilaygulbagce.stockCardApplication.utility.HibernateSessionManager;
+
+@Entity
+@Table(name = "stock_card")
+public class StockCardModel<E> implements Serializable {
+
+	public static final int CODE_LIMIT = 50;
+	public static final int NAME_LIMIT = 100;
+	public static final int BARCODE_LIMIT = 30;
+	public static final int DESCRIPTION_LIMIT = 100;
+
+	@Id
+	@Column(name = "code")
 	private String stockCode;
+	
+	@Column(name = "name")
 	private String stockName;
+	
+	@Column(name = "warehouse_code")
 	private String warehouseCode;
+	
+	@Column(name = "type")
 	private int stockType;
+	
+	@Column(name = "unit")
 	private String stockUnit;
+	
+	@Column(name = "barcode")
 	private String stockBarcode;
+	
+	@Column(name = "vat_type")
 	private Double vatType;
+	
+	@Column(name = "creation_date")
 	private Date creationDate;
+	
+	@Column(name = "description")
 	private String description;
 	
-	public static final int STOCK_CODE_LIMIT = 50;
+	public StockCardModel() {
+		
+	}
 	
+	public StockCardModel(String stockCode, String stockName, String warehouseCode, int stockType, String stockUnit,
+			String stockBarcode, Double vatType, Date creationDate, String description) {
+		this.stockCode = stockCode;
+		this.stockName = stockName;
+		this.warehouseCode = warehouseCode;
+		this.stockType = stockType;
+		this.stockUnit = stockUnit;
+		this.stockBarcode = stockBarcode;
+		this.vatType = vatType;
+		this.creationDate = creationDate;
+		this.description = description;
+	}
+
 	public String getStockCode() {
 		return stockCode;
 	}
@@ -99,7 +144,7 @@ public class StockCardModel {
 		this.warehouseCode = warehouseCode;
 	}
 	
-	@SuppressWarnings("serial")
+	@Transient
 	HashMap<String, String> stockTypeMap = new HashMap<String, String>() {{
 		put("1", "Süt ve Süt Ürünleri");
 		put("2", "Et ve Et Ürünleri");
@@ -111,185 +156,118 @@ public class StockCardModel {
 		put("8", "Unlu Mamüller");
 		put("9", "Su Ürünleri");
 	}};
+	
+	public List<E> list(String whereClause) {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
+		
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		transaction.begin();
+		
+		@SuppressWarnings("unchecked")
+		Query<E> query = session.createQuery("from " + getClass().getName() + "");
+		List<E> results = query.getResultList();
 
-	
-	@SuppressWarnings("rawtypes")
-	public ArrayList<Vector> list() throws SQLException {
-		
-		ResultSet resultSet = null;
-			
-		ArrayList<Vector> stockCardList = new ArrayList<Vector>();
-			
-		String sql = "SELECT * FROM stock_card";
-	
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-			
-			resultSet = preparedStatement.executeQuery();
-				
-			ResultSetMetaData stData = resultSet.getMetaData();
-				
-			int dbColumnCount;
-			dbColumnCount = stData.getColumnCount();
-				
-			while(resultSet.next()) {
-				Vector<String> columnData = new Vector<String>();
-					
-				for(int i=1; i<dbColumnCount; i++) {
-					columnData.add(resultSet.getString("stock_code"));
-	                columnData.add(resultSet.getString("stock_name"));
-	                columnData.add(resultSet.getString("warehouse_code"));
-	                columnData.add(stockTypeMap.get(resultSet.getString("stock_type")));
-	                columnData.add(resultSet.getString("stock_unit"));
-	                columnData.add(resultSet.getString("stock_barcode"));
-	                columnData.add(resultSet.getString("stock_vat_type"));
-	                String date[] = resultSet.getString("stock_creation_date").split(" ");
-	                columnData.add(date[0]);
-	                columnData.add(resultSet.getString("stock_description"));
-				}
-				stockCardList.add(columnData);
-			}
-			return stockCardList;
-		} catch (SQLException exception) {
-			System.err.println(exception);
-			return null;
-		} finally {
-			DatabaseConnection.getConnection().close();
-		}
+		session.close();
+		return results;
 	}
 	
-	public boolean insert() throws SQLException {
+	public boolean insert() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
 		
-		String sql = "INSERT INTO stock_card (stock_code, stock_name, warehouse_code, stock_type, stock_unit, "
-				+ "stock_barcode, stock_vat_type, stock_creation_date, stock_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		
+		transaction.begin();
+		session.save(this);
+		transaction.commit();
+		session.close();
+		
+		return true;
+	}
+	
+	public boolean delete() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
+		
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		
+		transaction.begin();
+		session.delete(this);
+		transaction.commit();
+		session.close();
+		
+		return true;
+	}
 
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-			
-			preparedStatement.setString(1, getStockCode());
-			preparedStatement.setString(2, getStockName());
-			preparedStatement.setString(3, getWarehouseCode());
-			preparedStatement.setInt(4, getStockType());
-			preparedStatement.setString(5, getStockUnit());
-			preparedStatement.setString(6, getStockBarcode());
-			preparedStatement.setDouble(7, getVatType());
-			preparedStatement.setDate(8, getCreationDate());
-			preparedStatement.setString(9, getDescription());
-			preparedStatement.execute();
-			
-			return true;
-			
-		} catch (SQLException exception) {
-			System.err.println(exception);
-			return false;
-		} finally {
-			DatabaseConnection.getConnection().close();
-		}
+	public boolean update() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
+		
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		
+		transaction.begin();
+		session.update(this);
+		transaction.commit();
+		session.close();
+		
+		return true;
 	}
-	
-	public boolean delete() throws SQLException {
 		
-		String sql = "DELETE FROM stock_card WHERE stock_code = ?";
+	public boolean copy() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
 		
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-			
-			preparedStatement.setString(1, getStockCode());
-			preparedStatement.execute();
-			
-			return true;
-			
-		} catch (SQLException exception) {
-			System.err.println(exception);
-			return false;
-		} finally {
-			DatabaseConnection.getConnection().close();
-		}
-	}
-	
-	public boolean update() throws SQLException {
-
-		String sql = "UPDATE stock_card.stock_card SET stock_name = ?, stock_type = ?, warehouse_code = ?, stock_unit = ?, "
-				+ "stock_barcode = ?, stock_vat_type = ?, stock_creation_date = ?, stock_description = ? WHERE stock_code = ?";
-		
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-			
-			preparedStatement.setString(1, getStockName());
-			preparedStatement.setInt(2, getStockType());
-			preparedStatement.setString(3, getWarehouseCode());
-			preparedStatement.setString(4, getStockUnit());
-			preparedStatement.setString(5, getStockBarcode());
-			preparedStatement.setDouble(6, getVatType());
-			preparedStatement.setDate(7, getCreationDate());
-			preparedStatement.setString(8, getDescription());
-			preparedStatement.setString(9, getStockCode());
-			preparedStatement.execute();
-			
-			return true;
-			
-		} catch (SQLException exception) {
-			System.err.println(exception);
-			return false;
-		} finally {
-			DatabaseConnection.getConnection().close();
-		}
-	}
-	
-	public boolean copy() throws SQLException {
-		
-		String stockCode = getStockCode();
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
 		
 		String copyItem = JOptionPane.showInputDialog(null, "Kopyanın Stok Kodu?");
 		
-		String sql = "INSERT INTO stock_card (stock_code, stock_name, warehouse_code, stock_type, stock_unit, stock_barcode, stock_vat_type, stock_creation_date, stock_description)"
-                + "SELECT ?, stock_name, warehouse_code, stock_type, stock_unit, stock_barcode, stock_vat_type, stock_creation_date, stock_description FROM stock_card WHERE stock_code = ?";
+		transaction.begin();
+		this.setStockCode(copyItem);
+		session.save(this);
+		transaction.commit();
+		session.close();
 		
-		if(copyItem!= null) {
-			try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-				
-				preparedStatement.setString(1, copyItem);
-				preparedStatement.setString(2, stockCode);
-	        
-				preparedStatement.executeUpdate();
-	        
-				return true;
-			} catch (SQLException exception) {
-				System.err.println(exception);
-				return false;
-			} finally {
-				DatabaseConnection.getConnection().close();
-			}
-		}
-		return false;
+		return true;
 	}
 	
-	public boolean search() throws SQLException {
+	public boolean search() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
 		
-		ResultSet resultSet = null;
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
 		
-		String sql = "SELECT * FROM stock_card WHERE stock_code = ?";
+		transaction.begin();
+		StockCardModel find = session.get(StockCardModel.class, stockCode);
 		
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-			
-			preparedStatement.setString(1, getStockCode());
-			resultSet = preparedStatement.executeQuery();
-			
-			if (resultSet.next()) {
-				setStockCode(resultSet.getString("stock_code"));
-				setStockName(resultSet.getString("stock_name"));
-				setWarehouseCode(resultSet.getString("warehouse_code"));
-				setStockType(resultSet.getInt("stock_type"));
-				setStockUnit(resultSet.getString("stock_unit"));
-				setStockBarcode(resultSet.getString("stock_barcode"));
-				setVatType(resultSet.getDouble("stock_vat_type"));
-				setCreationDate(resultSet.getDate("stock_creation_date"));
-				setDescription(resultSet.getString("stock_description"));
-				
-				return true;
-			}
+		setStockCode(find.stockCode);
+		setStockName(find.stockName);
+		setWarehouseCode(find.warehouseCode);
+		setStockType(find.stockType);
+		setStockUnit(find.stockUnit);
+		setStockBarcode(find.stockBarcode);
+		setVatType(find.vatType);
+		setCreationDate(find.creationDate);
+		setDescription(find.description);
+		
+		transaction.commit();
+		session.close();
+		
+		return true;
+	}
+	
+	public boolean isRecorded() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
+		
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		
+		transaction.begin();
+		StockCardModel find = session.get(StockCardModel.class, stockCode);
+		
+		if(find == null) {
 			return false;
-		} catch (SQLException exception) {
-			System.err.println(exception);
-			return false;
-		} finally {
-			DatabaseConnection.getConnection().close();
 		}
+		return true;
 	}
 }

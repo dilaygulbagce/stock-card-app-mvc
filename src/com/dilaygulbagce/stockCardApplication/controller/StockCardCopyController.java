@@ -2,7 +2,6 @@ package com.dilaygulbagce.stockCardApplication.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
@@ -45,15 +44,11 @@ public class StockCardCopyController implements ActionListener {
 	public void copy() {
 		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
 		
-		try {
-			if (stockCardModel.copy()) {
-				JOptionPane.showMessageDialog(null, "Kopyalama İşlemi Başarılı!");
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Bu Stok Kodu Zaten Kayıtlı!");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (stockCardModel.copy()) {
+			JOptionPane.showMessageDialog(null, "Kopyalama İşlemi Başarılı!");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Bu Stok Kodu Zaten Kayıtlı!");
 		}
 	}
 }

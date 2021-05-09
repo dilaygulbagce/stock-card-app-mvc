@@ -36,25 +36,25 @@ public class StockCardDeleteController implements ActionListener {
 				int dialog = JOptionPane.showConfirmDialog(null, "Silmek istediğinize emin misiniz?", "Uyarı", JOptionPane.YES_NO_OPTION);
 				
 				if (dialog == JOptionPane.YES_OPTION) {
-					delete();
-					cleanController.clean();
+					try {
+						delete();
+						cleanController.clean();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		}
 	}
 	
-	public void delete() {
+	public void delete() throws SQLException {
 		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
 		
-		try {
-			if (stockCardModel.delete()) {
-				JOptionPane.showMessageDialog(null, "Silme İşlemi Başarılı!");
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Hata!");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (stockCardModel.delete()) {
+			JOptionPane.showMessageDialog(null, "Silme İşlemi Başarılı!");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Hata!");
 		}
 	}
 }

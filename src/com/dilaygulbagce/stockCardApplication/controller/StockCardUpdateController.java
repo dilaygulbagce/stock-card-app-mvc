@@ -35,14 +35,18 @@ public class StockCardUpdateController implements ActionListener {
 				int dialog = JOptionPane.showConfirmDialog(null, "Güncellemeyi Onaylayınız", "Uyarı", JOptionPane.YES_NO_OPTION);
 				
 				if (dialog == JOptionPane.YES_OPTION) {
+					try {
 						update();
 						cleanController.clean();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		}
 	}
 	
-	public void update() {
+	public void update() throws SQLException {
 		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
 		stockCardModel.setStockName(mainFrame.stockCardFrame.tfStockName.getText());
 		stockCardModel.setWarehouseCode(mainFrame.stockCardFrame.cbWarehouseCode.getSelectedItem().toString());
@@ -54,15 +58,11 @@ public class StockCardUpdateController implements ActionListener {
 		stockCardModel.setCreationDate(date);
 		stockCardModel.setDescription(mainFrame.stockCardFrame.taDescription.getText());
 		
-		try {
-			if (stockCardModel.update()) {
-				JOptionPane.showMessageDialog(null, "Güncelleme İşlemi Başarılı!");
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Hata!");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (stockCardModel.update()) {
+			JOptionPane.showMessageDialog(null, "Güncelleme İşlemi Başarılı!");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Hata!");
 		}
 	}
 }

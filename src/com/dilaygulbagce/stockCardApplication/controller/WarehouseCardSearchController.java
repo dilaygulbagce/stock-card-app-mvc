@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
@@ -50,20 +49,16 @@ public class WarehouseCardSearchController implements ActionListener, KeyListene
 	}
 	
 	public void search() {
-		warehouseCardModel.setWarehouseCode(mainFrame.warehouseCardFrame.tfSearchBar.getText().toUpperCase());
+		warehouseCardModel.setWarehouseCode(mainFrame.warehouseCardFrame.tfSearchBar.getText());
 		
-		try {
-			if (warehouseCardModel.search()) {
-				mainFrame.warehouseCardFrame.tfWarehouseCode.setText(warehouseCardModel.getWarehouseCode());
-				mainFrame.warehouseCardFrame.tfWarehouseName.setText(warehouseCardModel.getWarehouseName());
-				mainFrame.warehouseCardFrame.taWarehouseDescription.setText(warehouseCardModel.getWarehouseDescription());
-				
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Kayıt Bulanamadı!");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (warehouseCardModel.search()) {
+			mainFrame.warehouseCardFrame.tfWarehouseCode.setText(warehouseCardModel.getWarehouseCode());
+			mainFrame.warehouseCardFrame.tfWarehouseName.setText(warehouseCardModel.getWarehouseName());
+			mainFrame.warehouseCardFrame.taWarehouseDescription.setText(warehouseCardModel.getWarehouseDescription());
+			
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Kayıt Bulanamadı!");
 		}
 	}
 	

@@ -51,7 +51,7 @@ public class StockCardFrame extends JInternalFrame {
 		tfSearchBar = new JTextField();
 		tfSearchBar.setColumns(10);
 		tfSearchBar.setBounds(16, 36, 200, 23);
-		tfSearchBar.setDocument(new EntryLimit(50));
+		tfSearchBar.setDocument(new EntryLimit(StockCardModel.CODE_LIMIT));
 		getContentPane().add(tfSearchBar);
 		
 		searchButton = new JButton("");
@@ -66,7 +66,7 @@ public class StockCardFrame extends JInternalFrame {
 		tfStockCode = new JTextField();
 		tfStockCode.setColumns(10);
 		tfStockCode.setBounds(128, 106, 200, 20);
-		tfStockCode.setDocument(new EntryLimit(StockCardModel.STOCK_CODE_LIMIT));
+		tfStockCode.setDocument(new EntryLimit(StockCardModel.CODE_LIMIT));
 		getContentPane().add(tfStockCode);
 		
 		JLabel lblNewLabel_1 = new JLabel("Stok Adı:");
@@ -76,7 +76,7 @@ public class StockCardFrame extends JInternalFrame {
 		tfStockName = new JTextField();
 		tfStockName.setColumns(10);
 		tfStockName.setBounds(128, 155, 200, 20);
-		tfStockName.setDocument(new EntryLimit(100));
+		tfStockName.setDocument(new EntryLimit(StockCardModel.NAME_LIMIT));
 		getContentPane().add(tfStockName);
 		
 		JLabel lblNewLabel_8 = new JLabel("Depo Kodu:");
@@ -124,7 +124,7 @@ public class StockCardFrame extends JInternalFrame {
 		tfBarcode = new JTextField();
 		tfBarcode.setColumns(10);
 		tfBarcode.setBounds(128, 355, 200, 20);
-		tfBarcode.setDocument(new EntryLimit(30));
+		tfBarcode.setDocument(new EntryLimit(StockCardModel.BARCODE_LIMIT));
 		getContentPane().add(tfBarcode);
 		
 		JLabel lblNewLabel_5 = new JLabel("KDV Tipi:");
@@ -154,6 +154,7 @@ public class StockCardFrame extends JInternalFrame {
 		taDescription = new JTextArea();
 		taDescription.setWrapStyleWord(true);
 		taDescription.setBounds(128, 507, 200, 60);
+		taDescription.setDocument(new EntryLimit(StockCardModel.DESCRIPTION_LIMIT));
 		getContentPane().add(taDescription);
 		
 		insertButton = new JButton("");

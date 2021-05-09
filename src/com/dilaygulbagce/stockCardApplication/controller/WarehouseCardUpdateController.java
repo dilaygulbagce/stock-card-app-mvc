@@ -2,7 +2,6 @@ package com.dilaygulbagce.stockCardApplication.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
@@ -45,15 +44,11 @@ public class WarehouseCardUpdateController implements ActionListener {
 		warehouseCardModel.setWarehouseName(mainFrame.warehouseCardFrame.tfWarehouseName.getText());
 		warehouseCardModel.setWarehouseDescription(mainFrame.warehouseCardFrame.taWarehouseDescription.getText());
 		
-		try {
-			if (warehouseCardModel.update()) {
-				JOptionPane.showMessageDialog(null, "Güncelleme İşlemi Başarılı!");
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Hata!");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (warehouseCardModel.update()) {
+			JOptionPane.showMessageDialog(null, "Güncelleme İşlemi Başarılı!");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Hata!");
 		}
 	}
 }

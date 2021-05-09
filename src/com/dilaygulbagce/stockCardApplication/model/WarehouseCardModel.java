@@ -1,21 +1,56 @@
 package com.dilaygulbagce.stockCardApplication.model;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.List;
 
-import com.dilaygulbagce.stockCardApplication.utility.DatabaseConnection;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.swing.table.DefaultTableModel;
 
-public class WarehouseCardModel {
-		
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+import com.dilaygulbagce.stockCardApplication.utility.HibernateSessionManager;
+
+@Entity
+@Table(name = "warehouse_card")
+public class WarehouseCardModel<E> {
+	
+	public static final int CODE_LIMIT = 15;
+	public static final int NAME_LIMIT = 50;
+	public static final int DESCRIPTION_LIMIT = 100;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private String warehouseID;
+	
+	@Column(name = "code")
 	private String warehouseCode;
+	
+	@Column(name = "name")
 	private String warehouseName;
+	
+	@Column(name = "description")
 	private String warehouseDescription;
 	
+	public WarehouseCardModel() {
+		
+	}
+	
+	public WarehouseCardModel(String warehouseID, String warehouseCode, String warehouseName,
+			String warehouseDescription) {
+		this.warehouseID = warehouseID;
+		this.warehouseCode = warehouseCode;
+		this.warehouseName = warehouseName;
+		this.warehouseDescription = warehouseDescription;
+	}
+
 	public String getWarehouseID() {
 		return warehouseID;
 	}
@@ -40,157 +75,118 @@ public class WarehouseCardModel {
 	public void setWarehouseDescription(String warehouseDescription) {
 		this.warehouseDescription = warehouseDescription;
 	}
+
+	public List<E> list(String whereClause) {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
+		
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		transaction.begin();
+		
+		@SuppressWarnings("unchecked")
+		Query<E> query = session.createQuery("from WarehouseCardModel");
+		List<E> results = query.getResultList();
+
+		session.close();
+		return results;
+	}
 	
-	@SuppressWarnings("rawtypes")
-	public ArrayList<Vector> list() throws SQLException {
+	public boolean insert() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
+		
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		
+		transaction.begin();
+		session.save(this);
+		transaction.commit();
+		session.close();
+		
+		return true;
+	}
 	
-		ResultSet resultSet = null;
-			
-		ArrayList<Vector> warehouseCardList = new ArrayList<Vector>();
-			
-		String sql = "SELECT * FROM warehouse_card";
+	public boolean delete() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
+		
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		
+		transaction.begin();
+		session.delete(this);
+		transaction.commit();
+		session.close();
+		
+		return true;
+	}
 	
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-				
-			resultSet = preparedStatement.executeQuery();
-			
-			ResultSetMetaData stData = resultSet.getMetaData();
-				
-			int dbColumnCount;
-			dbColumnCount = stData.getColumnCount();
-				
-			while(resultSet.next()) {
-				Vector<String> columnData = new Vector<String>();
-					
-				for(int i=1; i<dbColumnCount; i++) {
-					columnData.add(resultSet.getString("warehouse_id"));
-	                columnData.add(resultSet.getString("warehouse_code"));
-	                columnData.add(resultSet.getString("warehouse_name"));
-	                columnData.add(resultSet.getString("warehouse_description"));
-				}
-				warehouseCardList.add(columnData);
-			}
-			return warehouseCardList;
-			
-		} catch (SQLException exception) {
-			System.err.println(exception);
-			return null;
-		} finally {
-			DatabaseConnection.getConnection().close();
-		}
+	public boolean update() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
+		
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		
+		transaction.begin();
+		session.update(this);
+		transaction.commit();
+		session.close();
+		
+		return true;
 	}
 
-	public boolean insert() throws SQLException {
+	public boolean search() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
 		
-		String sql = "INSERT INTO warehouse_card (warehouse_id, warehouse_code, warehouse_name, warehouse_description) "
-				+ "VALUES (?, ?, ?, ?)";
-
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
 			
-			preparedStatement.setString(1, getWarehouseID());
-			preparedStatement.setString(2, getWarehouseCode());
-			preparedStatement.setString(3, getWarehouseName());
-			preparedStatement.setString(4, getWarehouseDescription());
-			preparedStatement.execute();
-			
-			return true;
-			
-		} catch (SQLException exception) {
-			System.err.println(exception);
-			return false;
-		} finally {
-			DatabaseConnection.getConnection().close();
-		}
+		transaction.begin();
+		Query query = session.createQuery("from WarehouseCardModel where code = :code");
+		query.setParameter("code", getWarehouseCode());
+		
+		WarehouseCardModel find = (WarehouseCardModel) query.list().get(0);
+		setWarehouseCode(find.warehouseCode);
+		setWarehouseName(find.warehouseName);
+		setWarehouseDescription(find.warehouseDescription);
+		
+		transaction.commit();
+		session.close();
+		
+		return true;
 	}
 	
-	public boolean delete() throws SQLException {
-				
-		String sql = "DELETE FROM warehouse_card WHERE warehouse_code = ?";
+	public boolean isRecorded() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
 		
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-			
-			preparedStatement.setString(1, getWarehouseCode());
-			preparedStatement.execute();
-			
-			return true;
-			
-		} catch (SQLException exception) {
-			System.err.println(exception);
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		
+		transaction.begin();
+		Query query = session.createQuery("from WarehouseCardModel where code = :code");
+		query.setParameter("code", getWarehouseCode());
+		
+		int find = query.list().size();
+		
+		if(find == 0) {
 			return false;
-		} finally {
-			DatabaseConnection.getConnection().close();
 		}
+		return true;
 	}
 	
-	public boolean update() throws SQLException {
-				
-		String sql = "UPDATE warehouse_card SET warehouse_name = ?, warehouse_description = ? WHERE warehouse_code = ?";
+	public List<E> fillWarehouseCodeCombobox(String whereClause) {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
 		
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-			
-			preparedStatement.setString(1, getWarehouseName());
-			preparedStatement.setString(2, getWarehouseDescription());
-			preparedStatement.setString(3, getWarehouseCode());
-			preparedStatement.execute();
-			
-			return true;
-			
-		} catch (SQLException exception) {
-			System.err.println(exception);
-			return false;
-		} finally {
-			DatabaseConnection.getConnection().close();
-		}
-	}
-	
-	public boolean search() throws SQLException {
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		transaction.begin();
 		
-		ResultSet resultSet = null;
+		List<E> results = new ArrayList<>();
+		results.add(null);
 		
-		String sql = "SELECT * FROM warehouse_card WHERE warehouse_code = ?";
+		@SuppressWarnings("unchecked")
+		Query<E> query = session.createQuery("select w.warehouseCode from WarehouseCardModel w");
+		results.addAll(query.getResultList());
+		session.close();
+		return results;
 		
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-			
-			preparedStatement.setString(1, getWarehouseCode());
-			resultSet = preparedStatement.executeQuery();
-			
-			if (resultSet.next()) {
-				setWarehouseCode(resultSet.getString("warehouse_code"));
-				setWarehouseName(resultSet.getString("warehouse_name"));
-				setWarehouseDescription(resultSet.getString("warehouse_description"));
-				
-				return true;
-			}
-			return false;
-		} catch (SQLException exception) {
-			System.err.println(exception);
-			return false;
-		} finally {
-			DatabaseConnection.getConnection().close();
-		}
-	}
-	
-	public ArrayList<String> fillWarehouseCodeCombobox() throws SQLException {
-		
-		ResultSet resultSet = null;
-			
-		ArrayList<String> warehouseCodeList = new ArrayList<String>();
-		warehouseCodeList.add(null);
-			
-		String sql = "SELECT warehouse_code FROM warehouse_card";
-	
-		try (PreparedStatement preparedStatement = DatabaseConnection.getConnection().prepareStatement(sql)) {
-			resultSet = preparedStatement.executeQuery();
-				
-			while(resultSet.next()) {					
-				warehouseCodeList.add(resultSet.getString("warehouse_code"));
-			}
-			return warehouseCodeList;
-		} catch (SQLException exception) {
-			System.err.println(exception);
-			return null;
-		} finally {
-			DatabaseConnection.getConnection().close();
-		}			
 	}
 }

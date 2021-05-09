@@ -2,7 +2,6 @@ package com.dilaygulbagce.stockCardApplication.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
@@ -46,15 +45,11 @@ public class WarehouseCardDeleteController implements ActionListener {
 	public void delete() {
 		warehouseCardModel.setWarehouseCode(mainFrame.warehouseCardFrame.tfWarehouseCode.getText());
 		
-		try {
-			if (warehouseCardModel.delete()) {
-				JOptionPane.showMessageDialog(null, "Silme İşlemi Başarılı!");
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Hata!");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (warehouseCardModel.delete()) {
+			JOptionPane.showMessageDialog(null, "Silme İşlemi Başarılı!");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Hata!");
 		}
 	}
 }

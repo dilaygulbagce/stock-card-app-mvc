@@ -2,7 +2,6 @@ package com.dilaygulbagce.stockCardApplication.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
@@ -33,7 +32,6 @@ public class WarehouseCardSaveController implements ActionListener {
 			if(controlController.control() == true) {
 				insert();
 				new WarehouseCodeComboboxController(warehouseCardModel, mainFrame);
-				cleanController.clean();
 			}
 		}
 	}
@@ -43,15 +41,18 @@ public class WarehouseCardSaveController implements ActionListener {
 		warehouseCardModel.setWarehouseName(mainFrame.warehouseCardFrame.tfWarehouseName.getText());
 		warehouseCardModel.setWarehouseDescription(mainFrame.warehouseCardFrame.taWarehouseDescription.getText());
 		
-		try {
-			if (warehouseCardModel.insert()) {
+
+		if(warehouseCardModel.isRecorded()) {
+			JOptionPane.showMessageDialog(null, "Bu Depo Kodu Zaten Kayıtlı!");
+		}
+		else {
+			if(warehouseCardModel.insert()) {
 				JOptionPane.showMessageDialog(null, "Kayıt İşlemi Başarılı!");
+				cleanController.clean();
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Bu Depo Kodu Zaten Kayıtlı!");
+				JOptionPane.showMessageDialog(null, "Hata!");
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 	}
 }

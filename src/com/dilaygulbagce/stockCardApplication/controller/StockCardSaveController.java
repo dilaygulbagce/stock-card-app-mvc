@@ -31,14 +31,17 @@ public class StockCardSaveController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.stockCardFrame.insertButton) {
-			if(controlController.control() == true) {
-				insert();
-				cleanController.clean();
+			if(controlController.control()) {
+				try {
+					insert();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
 	
-	public void insert() {
+	public void insert() throws SQLException {
 		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
 		stockCardModel.setStockName(mainFrame.stockCardFrame.tfStockName.getText());
 		stockCardModel.setWarehouseCode(mainFrame.stockCardFrame.cbWarehouseCode.getSelectedItem().toString());
@@ -50,15 +53,17 @@ public class StockCardSaveController implements ActionListener {
 		stockCardModel.setCreationDate(date);
 		stockCardModel.setDescription(mainFrame.stockCardFrame.taDescription.getText());
 		
-		try {
-			if (stockCardModel.insert()) {
+		if(stockCardModel.isRecorded()) {
+			JOptionPane.showMessageDialog(null, "Bu Stok Kodu Zaten Kayıtlı!");
+		}
+		else {
+			if(stockCardModel.insert()) {
 				JOptionPane.showMessageDialog(null, "Kayıt İşlemi Başarılı!");
+				cleanController.clean();
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Bu Stok Kodu Zaten Kayıtlı!");
+				JOptionPane.showMessageDialog(null, "Hata!");
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 	}
 }

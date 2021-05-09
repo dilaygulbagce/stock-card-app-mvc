@@ -21,16 +21,18 @@ public class MainController {
 		
 		StockCardEntryControlController scControlController = new StockCardEntryControlController(mainFrame);
 		StockCardEntryCleanController scCleanController = new StockCardEntryCleanController(mainFrame);
+		StockCardListCleanController scListCleanController = new StockCardListCleanController(mainFrame);
 		new StockCardSaveController(stockCardModel, mainFrame, scControlController, scCleanController);
 		new StockCardDeleteController(stockCardModel, mainFrame, scCleanController);
 		new StockCardUpdateController(stockCardModel, mainFrame, scControlController, scCleanController);
 		new StockCardCopyController(stockCardModel, mainFrame, scControlController, scCleanController);
 		new StockCardSearchController(stockCardModel, mainFrame);
-		new StockCardListController(stockCardModel, mainFrame);
+		new StockCardListController(stockCardModel, mainFrame, scListCleanController);
 		
 		WarehouseCardEntryControlController wcControlController = new WarehouseCardEntryControlController(mainFrame);
 		WarehouseCardEntryCleanController wcCleanController = new WarehouseCardEntryCleanController(mainFrame);
-		new WarehouseCardListController(warehouseCardModel, mainFrame);
+		WarehouseCardListCleanController wcListCleanController = new WarehouseCardListCleanController(mainFrame);
+		new WarehouseCardListController(warehouseCardModel, mainFrame, wcListCleanController);
 		new WarehouseCardSaveController(warehouseCardModel, mainFrame, wcControlController, wcCleanController);
 		new WarehouseCardDeleteController(warehouseCardModel, mainFrame, wcCleanController);
 		new WarehouseCardUpdateController(warehouseCardModel, mainFrame, wcControlController, wcCleanController);

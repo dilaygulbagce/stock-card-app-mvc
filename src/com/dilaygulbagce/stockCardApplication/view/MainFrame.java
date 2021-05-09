@@ -8,6 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import javax.swing.JMenuItem;
 import java.awt.Color;
 
@@ -77,4 +78,5 @@ public class MainFrame extends JFrame {
 		warehouseCardListMenuItem = new JMenuItem("Depo Kartlarını Listele");
 		stockMenu.add(warehouseCardListMenuItem);
 	}
+	
 }

@@ -4,6 +4,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.dilaygulbagce.stockCardApplication.model.WarehouseCardModel;
 import com.dilaygulbagce.stockCardApplication.utility.EntryLimit;
 
 import javax.swing.JTextArea;
@@ -38,7 +39,7 @@ public class WarehouseCardFrame extends JInternalFrame {
 		tfSearchBar = new JTextField();
 		tfSearchBar.setColumns(10);
 		tfSearchBar.setBounds(6, 22, 200, 23);
-		tfSearchBar.setDocument(new EntryLimit(15));
+		tfSearchBar.setDocument(new EntryLimit(WarehouseCardModel.CODE_LIMIT));
 		getContentPane().add(tfSearchBar);
 		
 		JLabel lblNewLabel_1 = new JLabel("Depo Kodu:");
@@ -47,7 +48,7 @@ public class WarehouseCardFrame extends JInternalFrame {
 		
 		tfWarehouseCode = new JTextField();
 		tfWarehouseCode.setBounds(107, 73, 200, 20);
-		tfWarehouseCode.setDocument(new EntryLimit(15));
+		tfWarehouseCode.setDocument(new EntryLimit(WarehouseCardModel.CODE_LIMIT));
 		getContentPane().add(tfWarehouseCode);
 		tfWarehouseCode.setColumns(10);
 		
@@ -57,7 +58,7 @@ public class WarehouseCardFrame extends JInternalFrame {
 		
 		tfWarehouseName = new JTextField();
 		tfWarehouseName.setBounds(107, 113, 200, 20);
-		tfWarehouseName.setDocument(new EntryLimit(50));
+		tfWarehouseName.setDocument(new EntryLimit(WarehouseCardModel.NAME_LIMIT));
 		getContentPane().add(tfWarehouseName);
 		tfWarehouseName.setColumns(10);
 		
@@ -67,7 +68,7 @@ public class WarehouseCardFrame extends JInternalFrame {
 		
 		taWarehouseDescription = new JTextArea();
 		taWarehouseDescription.setBounds(107, 155, 200, 50);
-		taWarehouseDescription.setDocument(new EntryLimit(100));
+		taWarehouseDescription.setDocument(new EntryLimit(WarehouseCardModel.DESCRIPTION_LIMIT));
 		getContentPane().add(taWarehouseDescription);
 		
 		insertButton = new JButton("");

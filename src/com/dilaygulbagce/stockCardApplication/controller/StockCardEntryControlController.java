@@ -13,6 +13,7 @@ public class StockCardEntryControlController {
 	}
 	
 	public boolean control() {
+		
 		if(mainFrame.stockCardFrame.tfStockCode.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Stok Kodu Alanı Boş Bırakılamaz");
 			return false;

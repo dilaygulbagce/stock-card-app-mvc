@@ -1,10 +1,10 @@
 package com.dilaygulbagce.stockCardApplication.controller;
 
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
@@ -50,7 +50,7 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 	}
 	
 	public void search() {
-		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfSearchBar.getText().toUpperCase());
+		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfSearchBar.getText());
 		
 		try {
 			if (stockCardModel.search()) {
@@ -68,7 +68,7 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 			else {
 				JOptionPane.showMessageDialog(null, "Kayıt Bulanamadı!");
 			}
-		} catch (SQLException e) {
+		} catch (HeadlessException e) {
 			e.printStackTrace();
 		}
 	}
