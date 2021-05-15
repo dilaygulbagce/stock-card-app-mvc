@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.swing.table.DefaultTableModel;
+import javax.persistence.Transient;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -19,30 +19,42 @@ import com.dilaygulbagce.stockCardApplication.utility.HibernateSessionManager;
 
 @Entity
 @Table(name = "warehouse_card")
-public class WarehouseCardModel<E> {
+public class WarehouseCardModel<E> extends BaseCardModel {
 	
 	public static final int CODE_LIMIT = 15;
 	public static final int NAME_LIMIT = 50;
 	public static final int DESCRIPTION_LIMIT = 100;
 	
-	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "id", updatable = false)
 	private String warehouseID;
 	
+	@Id
 	@Column(name = "code")
 	private String warehouseCode;
 	
 	@Column(name = "name")
 	private String warehouseName;
 	
-	@Column(name = "description")
+	@Column(name = "description", nullable = true)
 	private String warehouseDescription;
 	
 	public WarehouseCardModel() {
 		
 	}
 	
+	public WarehouseCardModel(String warehouseCode) {
+		super();
+		this.warehouseCode = warehouseCode;
+	}
+
+	public WarehouseCardModel(String warehouseCode, String warehouseName, String warehouseDescription) {
+		super();
+		this.warehouseCode = warehouseCode;
+		this.warehouseName = warehouseName;
+		this.warehouseDescription = warehouseDescription;
+	}
+
 	public WarehouseCardModel(String warehouseID, String warehouseCode, String warehouseName,
 			String warehouseDescription) {
 		this.warehouseID = warehouseID;
@@ -76,102 +88,105 @@ public class WarehouseCardModel<E> {
 		this.warehouseDescription = warehouseDescription;
 	}
 
-	public List<E> list(String whereClause) {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		transaction.begin();
-		
-		@SuppressWarnings("unchecked")
-		Query<E> query = session.createQuery("from WarehouseCardModel");
-		List<E> results = query.getResultList();
-
-		session.close();
-		return results;
-	}
+//	public List<E> list(String whereClause) {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		transaction.begin();
+//		
+//		@SuppressWarnings("unchecked")
+//		Query<E> query = session.createQuery("from WarehouseCardModel");
+//		List<E> results = query.getResultList();
+//
+//		session.close();
+//		return results;
+//	}
+//	
+//	public boolean insert() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		
+//		transaction.begin();
+//		session.save(this);
+//		transaction.commit();
+//		session.close();
+//		
+//		return true;
+//	}
+//	
+//	public boolean delete() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		
+//		transaction.begin();
+//		session.delete(this);
+//		transaction.commit();
+//		session.close();
+//		
+//		return true;
+//	}
+//	
+//	public boolean update() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		
+//		transaction.begin();
+//		session.update(this);
+//		transaction.commit();
+//		session.close();
+//		
+//		return true;
+//	}
+//	
+//	@Transient
+//	public boolean search() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//			
+//		transaction.begin();
+//		Query query = session.createQuery("from WarehouseCardModel where code = :code");
+//		query.setParameter("code", getWarehouseCode());
+//		
+//		WarehouseCardModel find = (WarehouseCardModel) query.list().get(0);
+//		setWarehouseCode(find.warehouseCode);
+//		setWarehouseName(find.warehouseName);
+//		setWarehouseDescription(find.warehouseDescription);
+//		
+//		transaction.commit();
+//		session.close();
+//		
+//		return true;
+//	}
+//	
+//	@Transient
+//	public boolean isRecorded() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		
+//		transaction.begin();
+//		Query query = session.createQuery("from WarehouseCardModel where code = :code");
+//		query.setParameter("code", getWarehouseCode());
+//		
+//		int find = query.list().size();
+//		
+//		if(find == 0) {
+//			return false;
+//		}
+//		return true;
+//	}
 	
-	public boolean insert() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		
-		transaction.begin();
-		session.save(this);
-		transaction.commit();
-		session.close();
-		
-		return true;
-	}
-	
-	public boolean delete() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		
-		transaction.begin();
-		session.delete(this);
-		transaction.commit();
-		session.close();
-		
-		return true;
-	}
-	
-	public boolean update() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		
-		transaction.begin();
-		session.update(this);
-		transaction.commit();
-		session.close();
-		
-		return true;
-	}
-
-	public boolean search() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-			
-		transaction.begin();
-		Query query = session.createQuery("from WarehouseCardModel where code = :code");
-		query.setParameter("code", getWarehouseCode());
-		
-		WarehouseCardModel find = (WarehouseCardModel) query.list().get(0);
-		setWarehouseCode(find.warehouseCode);
-		setWarehouseName(find.warehouseName);
-		setWarehouseDescription(find.warehouseDescription);
-		
-		transaction.commit();
-		session.close();
-		
-		return true;
-	}
-	
-	public boolean isRecorded() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		
-		transaction.begin();
-		Query query = session.createQuery("from WarehouseCardModel where code = :code");
-		query.setParameter("code", getWarehouseCode());
-		
-		int find = query.list().size();
-		
-		if(find == 0) {
-			return false;
-		}
-		return true;
-	}
-	
+	@Transient
 	public List<E> fillWarehouseCodeCombobox(String whereClause) {
 		HibernateSessionManager sessionManager = new HibernateSessionManager();
 		

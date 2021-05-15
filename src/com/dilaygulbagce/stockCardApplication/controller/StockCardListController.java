@@ -76,36 +76,36 @@ public class StockCardListController implements ActionListener, InternalFrameLis
 	@Override
 	public void internalFrameOpened(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void internalFrameClosed(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void internalFrameIconified(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void internalFrameDeiconified(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void internalFrameActivated(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void internalFrameDeactivated(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 }

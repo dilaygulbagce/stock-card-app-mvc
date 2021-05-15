@@ -41,10 +41,15 @@ public class WarehouseCardUpdateController implements ActionListener {
 
 	public void update() {
 		warehouseCardModel.setWarehouseCode(mainFrame.warehouseCardFrame.tfWarehouseCode.getText());
-		warehouseCardModel.setWarehouseName(mainFrame.warehouseCardFrame.tfWarehouseName.getText());
-		warehouseCardModel.setWarehouseDescription(mainFrame.warehouseCardFrame.taWarehouseDescription.getText());
 		
-		if (warehouseCardModel.update()) {
+		WarehouseCardModel warehouseCard = new WarehouseCardModel(warehouseCardModel.getWarehouseID(),
+				mainFrame.warehouseCardFrame.tfWarehouseCode.getText(),
+				mainFrame.warehouseCardFrame.tfWarehouseName.getText(),
+				mainFrame.warehouseCardFrame.taDescription.getText());
+		
+		System.out.println(warehouseCard.getWarehouseID());
+		
+		if (warehouseCard.update()) {
 			JOptionPane.showMessageDialog(null, "Güncelleme İşlemi Başarılı!");
 		}
 		else {

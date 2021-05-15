@@ -22,14 +22,15 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 		this.mainFrame = mainFrame;
 		
 		this.mainFrame.stockCardFrame.searchButton.addActionListener(this);
-		this.mainFrame.stockCardFrame.tfSearchBar.addKeyListener(this); 
+		this.mainFrame.stockCardFrame.tfStockCode.addKeyListener(this); 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.stockCardFrame.searchButton) {
-			if (mainFrame.stockCardFrame.tfSearchBar.getText().isEmpty()) {
+			if (mainFrame.stockCardFrame.tfStockCode.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Aranacak Kaydın Stok Kodunu Giriniz");
+		
 			}
 			else {
 				search();
@@ -40,7 +41,7 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (mainFrame.stockCardFrame.tfSearchBar.getText().isEmpty()) {
+			if (mainFrame.stockCardFrame.tfStockCode.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Aranacak Kaydın Stok Kodunu Giriniz");
 			}
 			else {
@@ -50,10 +51,12 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 	}
 	
 	public void search() {
-		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfSearchBar.getText());
-		
+		StockCardModel stockCard = new StockCardModel(mainFrame.stockCardFrame.tfStockCode.getText());
+
 		try {
-			if (stockCardModel.search()) {
+			stockCardModel = (StockCardModel) stockCard.search(mainFrame.stockCardFrame.tfStockCode.getText());
+			
+			if (stockCardModel != null) {
 				mainFrame.stockCardFrame.tfStockCode.setText(stockCardModel.getStockCode());
 				mainFrame.stockCardFrame.tfStockName.setText(stockCardModel.getStockName());
 				mainFrame.stockCardFrame.cbWarehouseCode.setSelectedItem(stockCardModel.getWarehouseCode());
@@ -63,10 +66,9 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 				mainFrame.stockCardFrame.cbVATType.setSelectedItem(stockCardModel.getVatType());
 				mainFrame.stockCardFrame.jdcCreationDate.setDate(stockCardModel.getCreationDate());
 				mainFrame.stockCardFrame.taDescription.setText(stockCardModel.getDescription());
-				
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Kayıt Bulanamadı!");
+				JOptionPane.showMessageDialog(null, "Kayıt Bulunamadı!");
 			}
 		} catch (HeadlessException e) {
 			e.printStackTrace();

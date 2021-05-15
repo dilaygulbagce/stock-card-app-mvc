@@ -20,7 +20,7 @@ import com.dilaygulbagce.stockCardApplication.utility.HibernateSessionManager;
 
 @Entity
 @Table(name = "stock_card")
-public class StockCardModel<E> implements Serializable {
+public class StockCardModel<E> extends BaseCardModel implements Serializable {
 
 	public static final int CODE_LIMIT = 50;
 	public static final int NAME_LIMIT = 100;
@@ -59,8 +59,13 @@ public class StockCardModel<E> implements Serializable {
 		
 	}
 	
+	public StockCardModel(String stockCode) {
+		super();
+		this.stockCode = stockCode;
+	}
+
 	public StockCardModel(String stockCode, String stockName, String warehouseCode, int stockType, String stockUnit,
-			String stockBarcode, Double vatType, Date creationDate, String description) {
+			String stockBarcode, Double vatType, Date creationDate, String description) {		
 		this.stockCode = stockCode;
 		this.stockName = stockName;
 		this.warehouseCode = warehouseCode;
@@ -144,130 +149,120 @@ public class StockCardModel<E> implements Serializable {
 		this.warehouseCode = warehouseCode;
 	}
 	
-	@Transient
-	HashMap<String, String> stockTypeMap = new HashMap<String, String>() {{
-		put("1", "Süt ve Süt Ürünleri");
-		put("2", "Et ve Et Ürünleri");
-		put("3", "Yağ");
-		put("4", "Meyve ve Sebze Ürünleri");
-		put("5", "Konserve Gıda");
-		put("6", "Dondurulmuş Gıda");
-		put("7", "Kuru Gıda");
-		put("8", "Unlu Mamüller");
-		put("9", "Su Ürünleri");
-	}};
+//	public List<E> list(String whereClause) {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		transaction.begin();
+//		
+//		@SuppressWarnings("unchecked")
+//		Query<E> query = session.createQuery("from " + getClass().getName() + "");
+//		List<E> results = query.getResultList();
+//
+//		session.close();
+//		return results;
+//	}
+//	
+//	public boolean insert() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		
+//		transaction.begin();
+//		session.save(this);
+//		transaction.commit();
+//		session.close();
+//		
+//		return true;
+//	}
+//	
+//	public boolean delete() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		
+//		transaction.begin();
+//		session.delete(this);
+//		transaction.commit();
+//		session.close();
+//		
+//		return true;
+//	}
+//
+//	public boolean update() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		
+//		transaction.begin();
+//		session.update(this);
+//		transaction.commit();
+//		session.close();
+//		
+//		return true;
+//	}
+		
+//	@Transient
+//	public boolean copy() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		
+//		String copyItem = JOptionPane.showInputDialog(null, "Kopyanın Stok Kodu?");
+//		
+//		transaction.begin();
+//		this.setStockCode(copyItem);
+//		session.save(this);
+//		transaction.commit();
+//		session.close();
+//		
+//		return true;
+//	}
+//	
+//	@Transient
+//	public boolean search() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		
+//		transaction.begin();
+//		StockCardModel find = session.get(StockCardModel.class, stockCode);
+//		
+//		setStockCode(find.stockCode);
+//		setStockName(find.stockName);
+//		setWarehouseCode(find.warehouseCode);
+//		setStockType(find.stockType);
+//		setStockUnit(find.stockUnit);
+//		setStockBarcode(find.stockBarcode);
+//		setVatType(find.vatType);
+//		setCreationDate(find.creationDate);
+//		setDescription(find.description);
+//		
+//		transaction.commit();
+//		session.close();
+//		
+//		return true;
+//	}
 	
-	public List<E> list(String whereClause) {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		transaction.begin();
-		
-		@SuppressWarnings("unchecked")
-		Query<E> query = session.createQuery("from " + getClass().getName() + "");
-		List<E> results = query.getResultList();
-
-		session.close();
-		return results;
-	}
-	
-	public boolean insert() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		
-		transaction.begin();
-		session.save(this);
-		transaction.commit();
-		session.close();
-		
-		return true;
-	}
-	
-	public boolean delete() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		
-		transaction.begin();
-		session.delete(this);
-		transaction.commit();
-		session.close();
-		
-		return true;
-	}
-
-	public boolean update() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		
-		transaction.begin();
-		session.update(this);
-		transaction.commit();
-		session.close();
-		
-		return true;
-	}
-		
-	public boolean copy() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		
-		String copyItem = JOptionPane.showInputDialog(null, "Kopyanın Stok Kodu?");
-		
-		transaction.begin();
-		this.setStockCode(copyItem);
-		session.save(this);
-		transaction.commit();
-		session.close();
-		
-		return true;
-	}
-	
-	public boolean search() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		
-		transaction.begin();
-		StockCardModel find = session.get(StockCardModel.class, stockCode);
-		
-		setStockCode(find.stockCode);
-		setStockName(find.stockName);
-		setWarehouseCode(find.warehouseCode);
-		setStockType(find.stockType);
-		setStockUnit(find.stockUnit);
-		setStockBarcode(find.stockBarcode);
-		setVatType(find.vatType);
-		setCreationDate(find.creationDate);
-		setDescription(find.description);
-		
-		transaction.commit();
-		session.close();
-		
-		return true;
-	}
-	
-	public boolean isRecorded() {
-		HibernateSessionManager sessionManager = new HibernateSessionManager();
-		
-		Session session = sessionManager.getSession();
-		Transaction transaction = session.getTransaction();
-		
-		transaction.begin();
-		StockCardModel find = session.get(StockCardModel.class, stockCode);
-		
-		if(find == null) {
-			return false;
-		}
-		return true;
-	}
+//	@Transient
+//	public boolean isRecorded() {
+//		HibernateSessionManager sessionManager = new HibernateSessionManager();
+//		
+//		Session session = sessionManager.getSession();
+//		Transaction transaction = session.getTransaction();
+//		
+//		transaction.begin();
+//		StockCardModel find = session.get(StockCardModel.class, stockCode);
+//		
+//		if(find == null) {
+//			return false;
+//		}
+//		return true;
+//	}
 }

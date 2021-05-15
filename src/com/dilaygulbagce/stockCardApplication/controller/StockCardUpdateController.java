@@ -48,17 +48,19 @@ public class StockCardUpdateController implements ActionListener {
 	
 	public void update() throws SQLException {
 		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
-		stockCardModel.setStockName(mainFrame.stockCardFrame.tfStockName.getText());
-		stockCardModel.setWarehouseCode(mainFrame.stockCardFrame.cbWarehouseCode.getSelectedItem().toString());
-		stockCardModel.setStockType(mainFrame.stockCardFrame.cbStockType.getSelectedIndex());
-		stockCardModel.setStockUnit(mainFrame.stockCardFrame.cbUnit.getSelectedItem().toString());
-		stockCardModel.setStockBarcode(mainFrame.stockCardFrame.tfBarcode.getText());
-		stockCardModel.setVatType(Double.parseDouble((String) mainFrame.stockCardFrame.cbVATType.getSelectedItem().toString()));
 		Date date = new Date(mainFrame.stockCardFrame.jdcCreationDate.getDate().getTime());
-		stockCardModel.setCreationDate(date);
-		stockCardModel.setDescription(mainFrame.stockCardFrame.taDescription.getText());
+
+		StockCardModel stockCard = new StockCardModel(mainFrame.stockCardFrame.tfStockCode.getText(), 
+				mainFrame.stockCardFrame.tfStockName.getText(),
+				mainFrame.stockCardFrame.cbWarehouseCode.getSelectedItem().toString(), 
+				mainFrame.stockCardFrame.cbStockType.getSelectedIndex(),
+				mainFrame.stockCardFrame.cbUnit.getSelectedItem().toString(), 
+				mainFrame.stockCardFrame.tfBarcode.getText(),
+				Double.parseDouble((String) mainFrame.stockCardFrame.cbVATType.getSelectedItem().toString()), 
+				date,
+				mainFrame.stockCardFrame.taDescription.getText());
 		
-		if (stockCardModel.update()) {
+		if (stockCard.update()) {
 			JOptionPane.showMessageDialog(null, "Güncelleme İşlemi Başarılı!");
 		}
 		else {

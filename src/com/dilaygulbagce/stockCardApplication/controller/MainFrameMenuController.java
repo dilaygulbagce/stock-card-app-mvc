@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
-public class MainFrameMenuController implements ActionListener{
+public class MainFrameMenuController implements ActionListener {
 	
 	private MainFrame mainFrame;
 	
@@ -27,17 +27,17 @@ public class MainFrameMenuController implements ActionListener{
 		}
 		
 		if (e.getSource() == mainFrame.stockCardListMenuItem) {
-			mainFrame.stockCardListFrame.setLocation(350, 5);
+			mainFrame.stockCardListFrame.setLocation(3, 5);
 			mainFrame.stockCardListFrame.setVisible(true);
 		}
 		
 		if (e.getSource() == mainFrame.warehouseCardMenuItem) {
-			mainFrame.warehouseCardFrame.setLocation(1090, 5);
+			mainFrame.warehouseCardFrame.setLocation(3, 5);
 			mainFrame.warehouseCardFrame.setVisible(true);
 		}
 		
 		if (e.getSource() == mainFrame.warehouseCardListMenuItem) {
-			mainFrame.warehouseCardListFrame.setLocation(1090, 340);
+			mainFrame.warehouseCardListFrame.setLocation(3, 5);
 			mainFrame.warehouseCardListFrame.setVisible(true);
 		}
 	}

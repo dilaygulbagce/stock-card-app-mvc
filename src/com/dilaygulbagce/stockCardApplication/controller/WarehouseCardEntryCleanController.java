@@ -24,9 +24,8 @@ public class WarehouseCardEntryCleanController implements ActionListener {
 	}
 	
 	public void clean() {
-		mainFrame.warehouseCardFrame.tfSearchBar.setText(null);
 		mainFrame.warehouseCardFrame.tfWarehouseCode.setText(null);
 		mainFrame.warehouseCardFrame.tfWarehouseName.setText(null);
-		mainFrame.warehouseCardFrame.taWarehouseDescription.setText(null);
+		mainFrame.warehouseCardFrame.taDescription.setText(null);
 	}
 }

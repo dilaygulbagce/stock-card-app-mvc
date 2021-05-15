@@ -10,8 +10,7 @@ public class MainController {
 	WarehouseCardModel warehouseCardModel;
 	MainFrame mainFrame;
 	
-	public MainController (StockCardModel stockCardModel, WarehouseCardModel warehouseCardModel, 
-			MainFrame mainFrame) {
+	public MainController (StockCardModel stockCardModel, WarehouseCardModel warehouseCardModel, MainFrame mainFrame) {
 		
 		this.stockCardModel = stockCardModel;
 		this.warehouseCardModel = warehouseCardModel;

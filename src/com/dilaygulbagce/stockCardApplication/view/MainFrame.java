@@ -16,12 +16,16 @@ import java.awt.Color;
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
+	
 	static JFrame frame;
+	
 	static JDesktopPane desktopPane;
+	
 	public StockCardFrame stockCardFrame;
 	public StockCardListFrame stockCardListFrame;
 	public WarehouseCardFrame warehouseCardFrame;
 	public WarehouseCardListFrame warehouseCardListFrame;
+	
 	public JMenuItem stockCardMenuItem;
 	public JMenuItem stockCardListMenuItem;
 	public JMenuItem warehouseCardMenuItem;

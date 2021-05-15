@@ -1,5 +1,7 @@
 package com.dilaygulbagce.stockCardApplication.view;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -7,94 +9,169 @@ import javax.swing.JTextField;
 import com.dilaygulbagce.stockCardApplication.model.WarehouseCardModel;
 import com.dilaygulbagce.stockCardApplication.utility.EntryLimit;
 
+import tr.com.guru.common.command.BaseCardDeleteCommand;
+import tr.com.guru.common.command.BaseCardSaveCommand;
+import tr.com.guru.common.model.BaseDataModel2;
+import tr.com.guru.common.view.BaseCardFrame;
+
 import javax.swing.JTextArea;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
-public class WarehouseCardFrame extends JInternalFrame {
+public class WarehouseCardFrame extends BaseCardFrame {
 	
-	public JTextField tfSearchBar;
 	public JTextField tfWarehouseCode;
 	public JTextField tfWarehouseName;
 	
-	public JTextArea taWarehouseDescription;
+	public JTextArea taDescription;
 	
 	public JButton insertButton;
 	public JButton deleteButton;
 	public JButton updateButton;
+	public JButton copyButton;
 	public JButton cleanButton;
 	public JButton searchButton;
 
 	public WarehouseCardFrame() {
-		setTitle("Depo Kart");
-		setIconifiable(true);
-		setClosable(true);
-		setBounds(100, 100, 337, 331);
-		getContentPane().setLayout(null);
+		super(null);
+	
+		setBounds(100, 100, 400, 232);
 		
-		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		
-		tfSearchBar = new JTextField();
-		tfSearchBar.setColumns(10);
-		tfSearchBar.setBounds(6, 22, 200, 23);
-		tfSearchBar.setDocument(new EntryLimit(WarehouseCardModel.CODE_LIMIT));
-		getContentPane().add(tfSearchBar);
-		
+		setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
+
 		JLabel lblNewLabel_1 = new JLabel("Depo Kodu:");
-		lblNewLabel_1.setBounds(6, 75, 100, 16);
+		lblNewLabel_1.setBounds(15, 55, 100, 20);
 		getContentPane().add(lblNewLabel_1);
 		
 		tfWarehouseCode = new JTextField();
-		tfWarehouseCode.setBounds(107, 73, 200, 20);
+		tfWarehouseCode.setBounds(115, 55, 200, 20);
 		tfWarehouseCode.setDocument(new EntryLimit(WarehouseCardModel.CODE_LIMIT));
 		getContentPane().add(tfWarehouseCode);
 		tfWarehouseCode.setColumns(10);
 		
 		JLabel lblNewLabel_2 = new JLabel("Depo Adı:");
-		lblNewLabel_2.setBounds(6, 115, 100, 16);
+		lblNewLabel_2.setBounds(15, 85, 100, 20);
 		getContentPane().add(lblNewLabel_2);
 		
 		tfWarehouseName = new JTextField();
-		tfWarehouseName.setBounds(107, 113, 200, 20);
+		tfWarehouseName.setBounds(115, 85, 200, 20);
 		tfWarehouseName.setDocument(new EntryLimit(WarehouseCardModel.NAME_LIMIT));
 		getContentPane().add(tfWarehouseName);
 		tfWarehouseName.setColumns(10);
 		
 		JLabel lblNewLabel_3 = new JLabel("Açıklama:");
-		lblNewLabel_3.setBounds(6, 155, 100, 16);
+		lblNewLabel_3.setBounds(15, 115, 100, 20);
 		getContentPane().add(lblNewLabel_3);
 		
-		taWarehouseDescription = new JTextArea();
-		taWarehouseDescription.setBounds(107, 155, 200, 50);
-		taWarehouseDescription.setDocument(new EntryLimit(WarehouseCardModel.DESCRIPTION_LIMIT));
-		getContentPane().add(taWarehouseDescription);
+		taDescription = new JTextArea();
+		taDescription.setBounds(115, 115, 200, 50);
+		taDescription.setDocument(new EntryLimit(WarehouseCardModel.DESCRIPTION_LIMIT));
+		getContentPane().add(taDescription);
 		
 		insertButton = new JButton("");
-		insertButton.setIcon(new ImageIcon(WarehouseCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/insert.png")));
-		insertButton.setBounds(28, 227, 55, 40);
+		insertButton.setBounds(0, 0, 0, 0);
+//		insertButton.setIcon(new ImageIcon(WarehouseCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/insert.png")));
+//		insertButton.setBounds(28, 227, 55, 40);
 		getContentPane().add(insertButton);
 		
 		deleteButton = new JButton("");
-		deleteButton.setIcon(new ImageIcon(WarehouseCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/delete.png")));
-		deleteButton.setBounds(95, 227, 55, 40);
+		deleteButton.setBounds(0, 0, 0, 0);
+//		deleteButton.setIcon(new ImageIcon(WarehouseCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/delete.png")));
+//		deleteButton.setBounds(95, 227, 55, 40);
 		getContentPane().add(deleteButton);
 		
 		updateButton = new JButton("");
-		updateButton.setIcon(new ImageIcon(WarehouseCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/update.png")));
-		updateButton.setBounds(162, 227, 55, 40);
+		updateButton.setBounds(0, 0, 0, 0);
+//		updateButton.setIcon(new ImageIcon(WarehouseCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/update.png")));
+//		updateButton.setBounds(162, 227, 55, 40);
 		getContentPane().add(updateButton);
 		
 		cleanButton = new JButton("");
-		cleanButton.setIcon(new ImageIcon(WarehouseCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/clean.png")));
-		cleanButton.setBounds(229, 227, 55, 40);
+		cleanButton.setBounds(0, 0, 0, 0);
+//		cleanButton.setIcon(new ImageIcon(WarehouseCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/clean.png")));
+//		cleanButton.setBounds(229, 227, 55, 40);
 		getContentPane().add(cleanButton);
 		
 		searchButton = new JButton("");
+		searchButton.setBounds(312, 50, 60, 30);
 		searchButton.setIcon(new ImageIcon(WarehouseCardFrame.class.getResource("/com/dilaygulbagce/stockCardApplication/resource/search.png")));
-		searchButton.setBounds(208, 22, 91, 23);
 		getContentPane().add(searchButton);
 
+	}
+
+	@Override
+	public void setTitle() {
+		setTitle("Depo Kart");
+	}
+
+	@Override
+	public void setDefaultSize() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public BaseDataModel2 getBaseDataModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setBaseDataModel(BaseDataModel2 bdm) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setNewBaseDataModel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setDataState() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String setPreCondition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public JTextField getMasterField() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getModelMasterValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BaseCardSaveCommand getBaseSaveDataCommand() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BaseCardDeleteCommand getBaseDeleteDataCommand() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setMenuItems() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isCodeChangeCommandActive() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

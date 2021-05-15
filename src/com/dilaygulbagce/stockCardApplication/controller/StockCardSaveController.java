@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
+import com.dilaygulbagce.stockCardApplication.model.BaseCardModel;
 import com.dilaygulbagce.stockCardApplication.model.StockCardModel;
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
@@ -43,21 +44,23 @@ public class StockCardSaveController implements ActionListener {
 	
 	public void insert() throws SQLException {
 		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
-		stockCardModel.setStockName(mainFrame.stockCardFrame.tfStockName.getText());
-		stockCardModel.setWarehouseCode(mainFrame.stockCardFrame.cbWarehouseCode.getSelectedItem().toString());
-		stockCardModel.setStockType(mainFrame.stockCardFrame.cbStockType.getSelectedIndex());
-		stockCardModel.setStockUnit(mainFrame.stockCardFrame.cbUnit.getSelectedItem().toString());
-		stockCardModel.setStockBarcode(mainFrame.stockCardFrame.tfBarcode.getText());
-		stockCardModel.setVatType(Double.parseDouble((String) mainFrame.stockCardFrame.cbVATType.getSelectedItem().toString()));
 		Date date = new Date(mainFrame.stockCardFrame.jdcCreationDate.getDate().getTime());
-		stockCardModel.setCreationDate(date);
-		stockCardModel.setDescription(mainFrame.stockCardFrame.taDescription.getText());
-		
-		if(stockCardModel.isRecorded()) {
+
+		StockCardModel stockCard = new StockCardModel(mainFrame.stockCardFrame.tfStockCode.getText(), 
+				mainFrame.stockCardFrame.tfStockName.getText(),
+				mainFrame.stockCardFrame.cbWarehouseCode.getSelectedItem().toString(), 
+				mainFrame.stockCardFrame.cbStockType.getSelectedIndex(),
+				mainFrame.stockCardFrame.cbUnit.getSelectedItem().toString(), 
+				mainFrame.stockCardFrame.tfBarcode.getText(),
+				Double.parseDouble((String) mainFrame.stockCardFrame.cbVATType.getSelectedItem().toString()), 
+				date,
+				mainFrame.stockCardFrame.taDescription.getText());
+				
+		if(stockCard.isRecorded(mainFrame.stockCardFrame.tfStockCode.getText())) {
 			JOptionPane.showMessageDialog(null, "Bu Stok Kodu Zaten Kayıtlı!");
 		}
 		else {
-			if(stockCardModel.insert()) {
+			if(stockCard.insert()) {
 				JOptionPane.showMessageDialog(null, "Kayıt İşlemi Başarılı!");
 				cleanController.clean();
 			}

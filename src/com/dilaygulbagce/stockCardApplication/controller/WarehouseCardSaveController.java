@@ -38,15 +38,16 @@ public class WarehouseCardSaveController implements ActionListener {
 	
 	public void insert() {
 		warehouseCardModel.setWarehouseCode(mainFrame.warehouseCardFrame.tfWarehouseCode.getText());
-		warehouseCardModel.setWarehouseName(mainFrame.warehouseCardFrame.tfWarehouseName.getText());
-		warehouseCardModel.setWarehouseDescription(mainFrame.warehouseCardFrame.taWarehouseDescription.getText());
 		
-
-		if(warehouseCardModel.isRecorded()) {
+		WarehouseCardModel warehouseCard = new WarehouseCardModel(mainFrame.warehouseCardFrame.tfWarehouseCode.getText(),
+				mainFrame.warehouseCardFrame.tfWarehouseName.getText(),
+				mainFrame.warehouseCardFrame.taDescription.getText());
+		
+		if(warehouseCard.isRecorded(mainFrame.warehouseCardFrame.tfWarehouseCode.getText())) {
 			JOptionPane.showMessageDialog(null, "Bu Depo Kodu Zaten Kayıtlı!");
 		}
 		else {
-			if(warehouseCardModel.insert()) {
+			if(warehouseCard.insert()) {
 				JOptionPane.showMessageDialog(null, "Kayıt İşlemi Başarılı!");
 				cleanController.clean();
 			}

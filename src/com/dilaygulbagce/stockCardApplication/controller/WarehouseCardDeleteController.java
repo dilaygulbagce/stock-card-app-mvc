@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import com.dilaygulbagce.stockCardApplication.model.StockCardModel;
 import com.dilaygulbagce.stockCardApplication.model.WarehouseCardModel;
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
@@ -43,9 +44,9 @@ public class WarehouseCardDeleteController implements ActionListener {
 	}
 	
 	public void delete() {
-		warehouseCardModel.setWarehouseCode(mainFrame.warehouseCardFrame.tfWarehouseCode.getText());
+		WarehouseCardModel warehouseCard = new WarehouseCardModel(mainFrame.warehouseCardFrame.tfWarehouseCode.getText());
 		
-		if (warehouseCardModel.delete()) {
+		if (warehouseCard.delete()) {
 			JOptionPane.showMessageDialog(null, "Silme İşlemi Başarılı!");
 		}
 		else {

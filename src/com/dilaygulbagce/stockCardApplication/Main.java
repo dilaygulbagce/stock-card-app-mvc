@@ -1,6 +1,7 @@
 package com.dilaygulbagce.stockCardApplication;
 
 import com.dilaygulbagce.stockCardApplication.controller.MainController;
+import com.dilaygulbagce.stockCardApplication.model.BaseCardModel;
 import com.dilaygulbagce.stockCardApplication.model.StockCardModel;
 import com.dilaygulbagce.stockCardApplication.model.WarehouseCardModel;
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;

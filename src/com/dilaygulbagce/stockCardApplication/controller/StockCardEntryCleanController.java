@@ -33,6 +33,5 @@ public class StockCardEntryCleanController implements ActionListener {
 		mainFrame.stockCardFrame.cbVATType.setSelectedItem(null);
 		mainFrame.stockCardFrame.jdcCreationDate.setDate(null);
 		mainFrame.stockCardFrame.taDescription.setText(null);
-		mainFrame.stockCardFrame.tfSearchBar.setText(null);
 	}
 }

@@ -48,9 +48,9 @@ public class StockCardDeleteController implements ActionListener {
 	}
 	
 	public void delete() throws SQLException {
-		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
+		StockCardModel stockCard = new StockCardModel(mainFrame.stockCardFrame.tfStockCode.getText());
 		
-		if (stockCardModel.delete()) {
+		if (stockCard.delete()) {
 			JOptionPane.showMessageDialog(null, "Silme İşlemi Başarılı!");
 		}
 		else {

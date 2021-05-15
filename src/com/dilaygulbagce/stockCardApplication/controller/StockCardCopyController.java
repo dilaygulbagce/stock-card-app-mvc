@@ -2,6 +2,7 @@ package com.dilaygulbagce.stockCardApplication.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 
 import javax.swing.JOptionPane;
 
@@ -35,20 +36,40 @@ public class StockCardCopyController implements ActionListener {
 			else {
 				if(controlController.control() == true) {
 					copy();
-					cleanController.clean();
 				}
 			}
 		}
 	}
 	
 	public void copy() {
+		String copyItem = JOptionPane.showInputDialog(null, "Kopyanın Stok Kodu?");
+
 		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
+		Date date = new Date(mainFrame.stockCardFrame.jdcCreationDate.getDate().getTime());
 		
-		if (stockCardModel.copy()) {
-			JOptionPane.showMessageDialog(null, "Kopyalama İşlemi Başarılı!");
+		StockCardModel stockCard = new StockCardModel(mainFrame.stockCardFrame.tfStockCode.getText(), 
+				mainFrame.stockCardFrame.tfStockName.getText(),
+				mainFrame.stockCardFrame.cbWarehouseCode.getSelectedItem().toString(), 
+				mainFrame.stockCardFrame.cbStockType.getSelectedIndex(),
+				mainFrame.stockCardFrame.cbUnit.getSelectedItem().toString(), 
+				mainFrame.stockCardFrame.tfBarcode.getText(),
+				Double.parseDouble((String) mainFrame.stockCardFrame.cbVATType.getSelectedItem().toString()), 
+				date,
+				mainFrame.stockCardFrame.taDescription.getText());
+		
+		stockCard.setStockCode(copyItem);
+		
+		if(stockCard.isRecorded(mainFrame.stockCardFrame.tfStockCode.getText())) {
+			JOptionPane.showMessageDialog(null, "Bu Stok Kodu Zaten Kayıtlı!");
 		}
 		else {
-			JOptionPane.showMessageDialog(null, "Bu Stok Kodu Zaten Kayıtlı!");
+			if(stockCard.insert()) {
+				JOptionPane.showMessageDialog(null, "Kopyalama İşlemi Başarılı!");
+				cleanController.clean();
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Hata!");
+			}
 		}
 	}
 }
