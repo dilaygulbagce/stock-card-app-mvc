@@ -2,79 +2,85 @@ package com.dilaygulbagce.stockCardApplication.model;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import com.dilaygulbagce.stockCardApplication.utility.HibernateSessionManager;
 
+import tr.com.guru.common.model.BaseEntity;
+import tr.com.guru.common.model.MasterValue;
+import tr.com.guru.common.view.MainFrameInterface;
+
 @Entity
-@Table(name = "stock_card")
-public class StockCardModel<E> extends BaseCardModel implements Serializable {
+@Table(name = StockCardModel.TABLE)
+public class StockCardModel extends BaseEntity implements Serializable {
+	
+	public static final String TABLE = "stock_card";
+	public static final String ALIAS = "s";
 
 	public static final int CODE_LIMIT = 50;
 	public static final int NAME_LIMIT = 100;
 	public static final int BARCODE_LIMIT = 30;
 	public static final int DESCRIPTION_LIMIT = 100;
+	
+	@MasterValue
+	private static final String KODU = "stockCode";
 
 	@Id
-	@Column(name = "code")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false)
+	private int stockId;
+	
+	@Column(name = "code", nullable=false, length=CODE_LIMIT)
 	private String stockCode;
 	
-	@Column(name = "name")
+	@Column(name = "name", nullable=false, length=NAME_LIMIT)
 	private String stockName;
 	
-	@Column(name = "warehouse_code")
+	@Column(name = "warehouse_code", nullable=false)
 	private String warehouseCode;
 	
-	@Column(name = "type")
+	@Column(name = "type", nullable=false)
 	private int stockType;
 	
-	@Column(name = "unit")
+	@Column(name = "unit", nullable=false)
 	private String stockUnit;
 	
-	@Column(name = "barcode")
+	@Column(name = "barcode", nullable=false, length=BARCODE_LIMIT)
 	private String stockBarcode;
 	
-	@Column(name = "vat_type")
+	@Column(name = "vat_type", nullable=false, columnDefinition="DOUBLE")
 	private Double vatType;
 	
-	@Column(name = "creation_date")
+	@Column(name = "creation_date", nullable=false, columnDefinition="DATE")
 	private Date creationDate;
 	
-	@Column(name = "description")
+	@Column(name = "description", nullable=false, length=DESCRIPTION_LIMIT)
 	private String description;
 	
 	public StockCardModel() {
-		
+		super(null);
 	}
 	
-	public StockCardModel(String stockCode) {
-		super();
-		this.stockCode = stockCode;
+	public StockCardModel(MainFrameInterface mainFrame) {
+		super(mainFrame);
 	}
 
-	public StockCardModel(String stockCode, String stockName, String warehouseCode, int stockType, String stockUnit,
-			String stockBarcode, Double vatType, Date creationDate, String description) {		
-		this.stockCode = stockCode;
-		this.stockName = stockName;
-		this.warehouseCode = warehouseCode;
-		this.stockType = stockType;
-		this.stockUnit = stockUnit;
-		this.stockBarcode = stockBarcode;
-		this.vatType = vatType;
-		this.creationDate = creationDate;
-		this.description = description;
+	public int getStockId() {
+		return stockId;
+	}
+
+	public void setStockId(int stockId) {
+		this.stockId = stockId;
 	}
 
 	public String getStockCode() {
@@ -149,109 +155,24 @@ public class StockCardModel<E> extends BaseCardModel implements Serializable {
 		this.warehouseCode = warehouseCode;
 	}
 	
-//	public List<E> list(String whereClause) {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		transaction.begin();
-//		
-//		@SuppressWarnings("unchecked")
-//		Query<E> query = session.createQuery("from " + getClass().getName() + "");
-//		List<E> results = query.getResultList();
-//
-//		session.close();
-//		return results;
-//	}
-//	
-//	public boolean insert() {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		
-//		transaction.begin();
-//		session.save(this);
-//		transaction.commit();
-//		session.close();
-//		
-//		return true;
-//	}
-//	
-//	public boolean delete() {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		
-//		transaction.begin();
-//		session.delete(this);
-//		transaction.commit();
-//		session.close();
-//		
-//		return true;
-//	}
-//
-//	public boolean update() {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		
-//		transaction.begin();
-//		session.update(this);
-//		transaction.commit();
-//		session.close();
-//		
-//		return true;
-//	}
+	public boolean copy() {
+		HibernateSessionManager sessionManager = new HibernateSessionManager();
 		
-//	@Transient
-//	public boolean copy() {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		
-//		String copyItem = JOptionPane.showInputDialog(null, "Kopyanın Stok Kodu?");
-//		
-//		transaction.begin();
-//		this.setStockCode(copyItem);
-//		session.save(this);
-//		transaction.commit();
-//		session.close();
-//		
-//		return true;
-//	}
-//	
-//	@Transient
-//	public boolean search() {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		
-//		transaction.begin();
-//		StockCardModel find = session.get(StockCardModel.class, stockCode);
-//		
-//		setStockCode(find.stockCode);
-//		setStockName(find.stockName);
-//		setWarehouseCode(find.warehouseCode);
-//		setStockType(find.stockType);
-//		setStockUnit(find.stockUnit);
-//		setStockBarcode(find.stockBarcode);
-//		setVatType(find.vatType);
-//		setCreationDate(find.creationDate);
-//		setDescription(find.description);
-//		
-//		transaction.commit();
-//		session.close();
-//		
-//		return true;
-//	}
+		Session session = sessionManager.getSession();
+		Transaction transaction = session.getTransaction();
+		
+		String copyItem = JOptionPane.showInputDialog(null, "Kopyanın Stok Kodu?");
+		
+		transaction.begin();
+		this.setStockCode(copyItem);
+		session.save(this);
+		transaction.commit();
+		session.close();
+		
+		return true;
+	}
 	
-//	@Transient
-//	public boolean isRecorded() {
+//	public boolean isRecorded(String stockCode) {
 //		HibernateSessionManager sessionManager = new HibernateSessionManager();
 //		
 //		Session session = sessionManager.getSession();
@@ -265,4 +186,25 @@ public class StockCardModel<E> extends BaseCardModel implements Serializable {
 //		}
 //		return true;
 //	}
+
+	@Override
+	public BaseEntity emptyModel() {
+		return new StockCardModel(mainFrame);
+	}
+
+	@Override
+	public void setCodeChangeComponentDataList() {
+		
+	}
+
+	@Override
+	public String getTableName() {
+		return TABLE;
+	}
+
+	@Override
+	public String getAlias() {
+		return ALIAS;
+	}
+	
 }

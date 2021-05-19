@@ -13,7 +13,7 @@ public class WarehouseCardEntryCleanController implements ActionListener {
 
 		this.mainFrame = mainFrame;
 		
-		this.mainFrame.warehouseCardFrame.cleanButton.addActionListener(this);
+//		this.mainFrame.warehouseCardFrame.cleanButton.addActionListener(this);
 	}
 
 	@Override

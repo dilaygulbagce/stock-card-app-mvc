@@ -23,7 +23,7 @@ public class WarehouseCardSearchController implements ActionListener, KeyListene
 		this.mainFrame = mainFrame;
 		
 		this.mainFrame.warehouseCardFrame.searchButton.addActionListener(this);
-		this.mainFrame.warehouseCardFrame.tfWarehouseCode.addKeyListener(this);
+//		this.mainFrame.warehouseCardFrame.tfWarehouseCode.addKeyListener(this);
 	}
 	
 	@Override
@@ -51,15 +51,17 @@ public class WarehouseCardSearchController implements ActionListener, KeyListene
 	}
 	
 	public void search() {
-		WarehouseCardModel warehouseCard = new WarehouseCardModel(mainFrame.warehouseCardFrame.tfWarehouseCode.getText());
+		WarehouseCardModel warehouseCard = new WarehouseCardModel(mainFrame);
 		
 		try {
-			warehouseCardModel = (WarehouseCardModel) warehouseCard.search(mainFrame.warehouseCardFrame.tfWarehouseCode.getText());
+			warehouseCardModel = (WarehouseCardModel) warehouseCard.setDataWithWhere(" where code ='" + mainFrame.warehouseCardFrame.tfWarehouseCode.getText() + "'");
 			
 			if (warehouseCardModel != null) {
 				mainFrame.warehouseCardFrame.tfWarehouseCode.setText(warehouseCardModel.getWarehouseCode());
 				mainFrame.warehouseCardFrame.tfWarehouseName.setText(warehouseCardModel.getWarehouseName());
 				mainFrame.warehouseCardFrame.taDescription.setText(warehouseCardModel.getWarehouseDescription());
+				mainFrame.warehouseCardFrame.dnb.enableDeleteButton();
+				mainFrame.warehouseCardFrame.dnb.disableSaveButton();
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "Kayıt Bulanamadı!");

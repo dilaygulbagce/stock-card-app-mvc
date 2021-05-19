@@ -12,6 +12,8 @@ import javax.swing.table.DefaultTableModel;
 import com.dilaygulbagce.stockCardApplication.model.WarehouseCardModel;
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
+import tr.com.guru.common.model.BaseEntity;
+
 public class WarehouseCardListController implements ActionListener, InternalFrameListener {
 	
 	private WarehouseCardModel warehouseCardModel;
@@ -46,20 +48,18 @@ public class WarehouseCardListController implements ActionListener, InternalFram
 		mainFrame.warehouseCardListFrame.listButton.setText("Listele");
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void list() {
-		List<WarehouseCardModel> warehouseCardList = warehouseCardModel.list("");
-
+		List<BaseEntity> warehouseCardList = warehouseCardModel.listAll("");
 		if (warehouseCardList != null) {
 			DefaultTableModel recordTable = (DefaultTableModel) mainFrame.warehouseCardListFrame.warehouseCardTable.getModel();
 
 			Object[] row = new Object[4];
 			
 			warehouseCardList.forEach(e -> {
-				row[0] = e.getWarehouseID();
-				row[1] = e.getWarehouseCode();
-				row[2] = e.getWarehouseName();
-				row[3] = e.getWarehouseDescription();
+				row[0] = ((WarehouseCardModel) e).getId();
+				row[1] = ((WarehouseCardModel) e).getWarehouseCode();
+				row[2] = ((WarehouseCardModel) e).getWarehouseName();
+				row[3] = ((WarehouseCardModel) e).getWarehouseDescription();
 				recordTable.addRow(row);
 			});
 			

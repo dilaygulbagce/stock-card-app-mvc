@@ -20,9 +20,9 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 
 		this.stockCardModel = stockCardModel;
 		this.mainFrame = mainFrame;
-		
-		this.mainFrame.stockCardFrame.searchButton.addActionListener(this);
-		this.mainFrame.stockCardFrame.tfStockCode.addKeyListener(this); 
+//		
+//		this.mainFrame.stockCardFrame.searchButton.addActionListener(this);
+//		this.mainFrame.stockCardFrame.tfStockCode.addKeyListener(this); 
 	}
 
 	@Override
@@ -51,12 +51,12 @@ public class StockCardSearchController implements ActionListener, KeyListener {
 	}
 	
 	public void search() {
-		StockCardModel stockCard = new StockCardModel(mainFrame.stockCardFrame.tfStockCode.getText());
+		StockCardModel stockCard = new StockCardModel(mainFrame);
 
 		try {
-			stockCardModel = (StockCardModel) stockCard.search(mainFrame.stockCardFrame.tfStockCode.getText());
+			stockCardModel = (StockCardModel) stockCard.setDataWithWhere(" where code ='" + mainFrame.stockCardFrame.tfStockCode.getText() + "'");
 			
-			if (stockCardModel != null) {
+			if (stockCardModel.isRecorded()) {
 				mainFrame.stockCardFrame.tfStockCode.setText(stockCardModel.getStockCode());
 				mainFrame.stockCardFrame.tfStockName.setText(stockCardModel.getStockName());
 				mainFrame.stockCardFrame.cbWarehouseCode.setSelectedItem(stockCardModel.getWarehouseCode());

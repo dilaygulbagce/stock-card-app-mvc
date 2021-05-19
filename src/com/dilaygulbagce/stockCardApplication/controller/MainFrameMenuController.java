@@ -22,6 +22,7 @@ public class MainFrameMenuController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainFrame.stockCardMenuItem) {
+			
 			mainFrame.stockCardFrame.setLocation(3, 5);
 			mainFrame.stockCardFrame.setVisible(true);
 		}

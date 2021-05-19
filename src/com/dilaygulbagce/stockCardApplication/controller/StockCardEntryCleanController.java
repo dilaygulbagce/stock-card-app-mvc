@@ -13,7 +13,7 @@ public class StockCardEntryCleanController implements ActionListener {
 
 		this.mainFrame = mainFrame;
 		
-		this.mainFrame.stockCardFrame.cleanButton.addActionListener(this);
+//		this.mainFrame.stockCardFrame.cleanButton.addActionListener(this);
 	}
 
 	@Override

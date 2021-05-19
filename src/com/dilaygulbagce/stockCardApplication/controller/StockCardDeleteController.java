@@ -1,60 +1,63 @@
 package com.dilaygulbagce.stockCardApplication.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-
 import javax.swing.JOptionPane;
 
-import com.dilaygulbagce.stockCardApplication.model.StockCardModel;
-import com.dilaygulbagce.stockCardApplication.view.MainFrame;
+import com.dilaygulbagce.stockCardApplication.view.StockCardFrame;
 
-public class StockCardDeleteController implements ActionListener {
+import tr.com.guru.common.command.BaseCardDeleteCommand;
 
-	private StockCardModel stockCardModel;
-	private MainFrame mainFrame;
+public class StockCardDeleteController extends BaseCardDeleteCommand<StockCardFrame> {
+
 	private StockCardEntryCleanController cleanController;
-
-	public StockCardDeleteController (StockCardModel stockCardModel, MainFrame mainFrame, 
-			StockCardEntryCleanController cleanController) {
-		
-		this.stockCardModel = stockCardModel;
-		this.mainFrame = mainFrame;
-		this.cleanController = cleanController;
-		
-		this.mainFrame.stockCardFrame.deleteButton.addActionListener(this);
+	
+	public StockCardDeleteController (StockCardFrame iFrame) {
+		super(iFrame);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public boolean isSuitableToDelete(StockCardFrame iFrame) {
+		String stockCode = iFrame.stockCardModel.getStockCode();
 		
-		if (e.getSource() == mainFrame.stockCardFrame.deleteButton) {
-			if (mainFrame.stockCardFrame.tfStockCode.getText().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Silinecek Kaydı Seçiniz");
-			}
-			else {
-				int dialog = JOptionPane.showConfirmDialog(null, "Silmek istediğinize emin misiniz?", "Uyarı", JOptionPane.YES_NO_OPTION);
-				
-				if (dialog == JOptionPane.YES_OPTION) {
-					try {
-						delete();
-						cleanController.clean();
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					}
-				}
-			}
+		if(stockCode == null) {
+			JOptionPane.showMessageDialog(null, "Silinecek Kaydi Seciniz");
+			return false;
 		}
+		return true;
+	}
+
+	@Override
+	public void deleteModel(StockCardFrame iFrame) {
+		iFrame.stockCardModel.delete();
+		cleanController.clean();
 	}
 	
-	public void delete() throws SQLException {
-		StockCardModel stockCard = new StockCardModel(mainFrame.stockCardFrame.tfStockCode.getText());
-		
-		if (stockCard.delete()) {
-			JOptionPane.showMessageDialog(null, "Silme İşlemi Başarılı!");
-		}
-		else {
-			JOptionPane.showMessageDialog(null, "Hata!");
-		}
-	}
+//	public StockCardDeleteController (StockCardModel stockCardModel, MainFrame mainFrame, 
+//			StockCardEntryCleanController cleanController) {
+//		super(null);
+//		
+//		this.stockCardModel = stockCardModel;
+//		this.mainFrame = mainFrame;
+//		this.cleanController = cleanController;
+//		
+//		this.mainFrame.stockCardFrame.deleteButton.addActionListener(this);
+//	}
+//
+//	@Override
+//	public void actionPerformed(ActionEvent e) {
+//		
+//		if (e.getSource() == mainFrame.stockCardFrame.deleteButton) {
+//			if (mainFrame.stockCardFrame.tfStockCode.getText().isEmpty()) {
+//				JOptionPane.showMessageDialog(null, "Silinecek Kaydı Seçiniz");
+//			}
+//			else {
+//				int dialog = JOptionPane.showConfirmDialog(null, "Silmek istediğinize emin misiniz?", "Uyarı", JOptionPane.YES_NO_OPTION);
+//				
+//				if (dialog == JOptionPane.YES_OPTION) {
+//					
+//					cleanController.clean();
+//				}
+//			}
+//		}
+//	}
+
 }

@@ -12,6 +12,8 @@ import javax.swing.table.DefaultTableModel;
 import com.dilaygulbagce.stockCardApplication.model.StockCardModel;
 import com.dilaygulbagce.stockCardApplication.view.MainFrame;
 
+import tr.com.guru.common.model.BaseEntity;
+
 public class StockCardListController implements ActionListener, InternalFrameListener {
 
 	private StockCardModel stockCardModel;
@@ -20,7 +22,7 @@ public class StockCardListController implements ActionListener, InternalFrameLis
 
 	public StockCardListController(StockCardModel stockCardModel, MainFrame mainFrame,
 			StockCardListCleanController cleanController) {
-
+	
 		this.stockCardModel = stockCardModel;
 		this.mainFrame = mainFrame;
 		this.cleanController = cleanController;
@@ -43,28 +45,27 @@ public class StockCardListController implements ActionListener, InternalFrameLis
 		DefaultTableModel recordTable = (DefaultTableModel) mainFrame.stockCardListFrame.stockCardTable.getModel();
 		recordTable.setRowCount(0);
 
-		mainFrame.stockCardListFrame.setBounds(100, 100, 750, 745);
 		mainFrame.stockCardListFrame.listButton.setText("Listele");
 	}
 
-	public <E> void list() {
-		List<StockCardModel> stockCardList = stockCardModel.list("");
-
+	public void list() {
+		List<BaseEntity> stockCardList = stockCardModel.listAll("");
+		
 		if (stockCardList != null) {
 			DefaultTableModel recordTable = (DefaultTableModel) mainFrame.stockCardListFrame.stockCardTable.getModel();
 
 			Object[] row = new Object[9];
 			
 			stockCardList.forEach(e -> {
-				row[0] = e.getStockCode();
-				row[1] = e.getStockName();
-				row[2] = e.getWarehouseCode();
-				row[3] = e.getStockType();
-				row[4] = e.getStockUnit();
-				row[5] = e.getStockBarcode();
-				row[6] = e.getVatType();
-				row[7] = e.getCreationDate();
-				row[8] = e.getDescription();
+				row[0] = ((StockCardModel) e).getStockCode();
+				row[1] = ((StockCardModel) e).getStockName();
+				row[2] = ((StockCardModel) e).getWarehouseCode();
+				row[3] = ((StockCardModel) e).getStockType();
+				row[4] = ((StockCardModel) e).getStockUnit();
+				row[5] = ((StockCardModel) e).getStockBarcode();
+				row[6] = ((StockCardModel) e).getVatType();
+				row[7] = ((StockCardModel) e).getCreationDate();
+				row[8] = ((StockCardModel) e).getDescription();
 				recordTable.addRow(row);
 			});
 			

@@ -1,72 +1,98 @@
 package com.dilaygulbagce.stockCardApplication.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Date;
-import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
-import com.dilaygulbagce.stockCardApplication.model.BaseCardModel;
-import com.dilaygulbagce.stockCardApplication.model.StockCardModel;
-import com.dilaygulbagce.stockCardApplication.view.MainFrame;
+import com.dilaygulbagce.stockCardApplication.view.StockCardFrame;
 
-public class StockCardSaveController implements ActionListener {
+import tr.com.guru.common.command.BaseCardSaveCommand;
+
+public class StockCardSaveController extends BaseCardSaveCommand<StockCardFrame> {
 	
-	private StockCardModel stockCardModel;
-	private MainFrame mainFrame;
-	private StockCardEntryControlController controlController;
 	private StockCardEntryCleanController cleanController;
 	
-	public StockCardSaveController (StockCardModel stockCardModel, MainFrame mainFrame, 
-			StockCardEntryControlController controlController, StockCardEntryCleanController cleanController) {
-		
-		this.stockCardModel = stockCardModel;
-		this.mainFrame = mainFrame;
-		this.controlController = controlController;
-		this.cleanController = cleanController;
-		
-		this.mainFrame.stockCardFrame.insertButton.addActionListener(this);
+	public StockCardSaveController(StockCardFrame iFrame) {
+		super(iFrame);
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == mainFrame.stockCardFrame.insertButton) {
-			if(controlController.control()) {
-				try {
-					insert();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-			}
-		}
+	public boolean isSuitableToSave(StockCardFrame iFrame) {
+		if(iFrame.tfStockCode.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Stok Kodu Alanı Boş Bırakılamaz");
+			iFrame.tfStockCode.requestFocus();
+			return false;
+        }
+        
+        else if (iFrame.tfStockName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Stok Adı Alanı Boş Bırakılamaz");
+			iFrame.tfStockName.requestFocus();
+            return false;
+        }
+		
+        else if (iFrame.cbWarehouseCode.getSelectedItem() == null) {
+			JOptionPane.showMessageDialog(null, "Depo Kodu Alanı Boş Bırakılamaz");
+			iFrame.cbWarehouseCode.requestFocus();
+			return false;
+        }
+        
+        else if (iFrame.cbStockType.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(null, "Stok Tipi Alanı Boş Bırakılamaz");
+			iFrame.cbStockType.requestFocus();
+            return false;
+        }
+        
+        else if (iFrame.cbUnit.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(null, "Stok Birimi Alanı Boş Bırakılamaz");
+			iFrame.cbUnit.requestFocus();
+            return false;
+        }
+        
+        else if (iFrame.tfBarcode.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Barkod Alanı Boş Bırakılamaz");
+			iFrame.tfBarcode.requestFocus();
+            return false;
+        }
+        
+        else if (iFrame.cbVATType.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(null, "KDV Tipi Alanı Boş Bırakılamaz");
+			iFrame.cbVATType.requestFocus();
+            return false;
+        }
+        
+        else if (iFrame.jdcCreationDate.getDate() == null) {
+            JOptionPane.showMessageDialog(null, "Oluşturma Tarihi Alanı Boş Bırakılamaz");
+			iFrame.jdcCreationDate.requestFocus();
+            return false;
+        }
+		return true;
 	}
-	
-	public void insert() throws SQLException {
-		stockCardModel.setStockCode(mainFrame.stockCardFrame.tfStockCode.getText());
-		Date date = new Date(mainFrame.stockCardFrame.jdcCreationDate.getDate().getTime());
 
-		StockCardModel stockCard = new StockCardModel(mainFrame.stockCardFrame.tfStockCode.getText(), 
-				mainFrame.stockCardFrame.tfStockName.getText(),
-				mainFrame.stockCardFrame.cbWarehouseCode.getSelectedItem().toString(), 
-				mainFrame.stockCardFrame.cbStockType.getSelectedIndex(),
-				mainFrame.stockCardFrame.cbUnit.getSelectedItem().toString(), 
-				mainFrame.stockCardFrame.tfBarcode.getText(),
-				Double.parseDouble((String) mainFrame.stockCardFrame.cbVATType.getSelectedItem().toString()), 
-				date,
-				mainFrame.stockCardFrame.taDescription.getText());
-				
-		if(stockCard.isRecorded(mainFrame.stockCardFrame.tfStockCode.getText())) {
-			JOptionPane.showMessageDialog(null, "Bu Stok Kodu Zaten Kayıtlı!");
+	@Override
+	public void prepareMasterData(StockCardFrame iFrame) {
+		iFrame.stockCardModel.setStockCode(iFrame.tfStockCode.getText());
+		iFrame.stockCardModel.setStockName(iFrame.tfStockName.getText());
+		iFrame.stockCardModel.setWarehouseCode((String) iFrame.cbWarehouseCode.getSelectedItem());
+		iFrame.stockCardModel.setStockType(iFrame.cbStockType.getSelectedIndex());
+		iFrame.stockCardModel.setStockUnit((String) iFrame.cbUnit.getSelectedItem());
+		iFrame.stockCardModel.setStockBarcode(iFrame.tfBarcode.getText());
+		iFrame.stockCardModel.setVatType((Double) iFrame.cbVATType.getSelectedItem());
+		Date date = new Date(iFrame.jdcCreationDate.getDate().getTime());
+		iFrame.stockCardModel.setCreationDate(date);
+		iFrame.stockCardModel.setDescription(iFrame.taDescription.getText());
+	}
+
+	@Override
+	public void saveModel(StockCardFrame iFrame) {
+		if(iFrame.stockCardModel.isRecorded()) {
+			iFrame.stockCardModel.update();
+			cleanController.clean();
 		}
 		else {
-			if(stockCard.insert()) {
-				JOptionPane.showMessageDialog(null, "Kayıt İşlemi Başarılı!");
-				cleanController.clean();
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Hata!");
-			}
+			iFrame.stockCardModel.insert();
+			cleanController.clean();
 		}
+		
 	}
+
 }

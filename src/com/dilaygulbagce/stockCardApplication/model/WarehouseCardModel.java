@@ -1,5 +1,6 @@
 package com.dilaygulbagce.stockCardApplication.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,177 +18,66 @@ import org.hibernate.query.Query;
 
 import com.dilaygulbagce.stockCardApplication.utility.HibernateSessionManager;
 
+import tr.com.guru.common.model.BaseEntity;
+import tr.com.guru.common.model.MasterValue;
+import tr.com.guru.common.view.MainFrameInterface;
+
 @Entity
-@Table(name = "warehouse_card")
-public class WarehouseCardModel<E> extends BaseCardModel {
+@Table(name = WarehouseCardModel.TABLE)
+public class WarehouseCardModel extends BaseEntity implements Serializable {
+	
+	public static final String TABLE = "warehouse_card";
+	public static final String ALIAS = "w";
 	
 	public static final int CODE_LIMIT = 15;
 	public static final int NAME_LIMIT = 50;
 	public static final int DESCRIPTION_LIMIT = 100;
 	
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", updatable = false)
-	private String warehouseID;
+	@MasterValue
+	public static final String KODU = "warehouseCode";
 	
-	@Id
-	@Column(name = "code")
+	@Column(name = "code", nullable=false, length=CODE_LIMIT)
 	private String warehouseCode;
 	
-	@Column(name = "name")
+	@Column(name = "name", nullable=false, length=NAME_LIMIT)
 	private String warehouseName;
 	
-	@Column(name = "description", nullable = true)
+	@Column(name = "description", nullable = true, length=DESCRIPTION_LIMIT)
 	private String warehouseDescription;
 	
 	public WarehouseCardModel() {
-		
+		super(null);
 	}
 	
-	public WarehouseCardModel(String warehouseCode) {
-		super();
-		this.warehouseCode = warehouseCode;
+	public WarehouseCardModel(MainFrameInterface mainFrame) {
+		super(mainFrame);
 	}
 
-	public WarehouseCardModel(String warehouseCode, String warehouseName, String warehouseDescription) {
-		super();
-		this.warehouseCode = warehouseCode;
-		this.warehouseName = warehouseName;
-		this.warehouseDescription = warehouseDescription;
-	}
-
-	public WarehouseCardModel(String warehouseID, String warehouseCode, String warehouseName,
-			String warehouseDescription) {
-		this.warehouseID = warehouseID;
-		this.warehouseCode = warehouseCode;
-		this.warehouseName = warehouseName;
-		this.warehouseDescription = warehouseDescription;
-	}
-
-	public String getWarehouseID() {
-		return warehouseID;
-	}
-	public void setWarehouseID(String warehouseID) {
-		this.warehouseID = warehouseID;
-	}
 	public String getWarehouseCode() {
 		return warehouseCode;
 	}
+
 	public void setWarehouseCode(String warehouseCode) {
 		this.warehouseCode = warehouseCode;
 	}
+
 	public String getWarehouseName() {
 		return warehouseName;
 	}
+
 	public void setWarehouseName(String warehouseName) {
 		this.warehouseName = warehouseName;
 	}
+
 	public String getWarehouseDescription() {
 		return warehouseDescription;
 	}
+
 	public void setWarehouseDescription(String warehouseDescription) {
 		this.warehouseDescription = warehouseDescription;
 	}
 
-//	public List<E> list(String whereClause) {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		transaction.begin();
-//		
-//		@SuppressWarnings("unchecked")
-//		Query<E> query = session.createQuery("from WarehouseCardModel");
-//		List<E> results = query.getResultList();
-//
-//		session.close();
-//		return results;
-//	}
-//	
-//	public boolean insert() {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		
-//		transaction.begin();
-//		session.save(this);
-//		transaction.commit();
-//		session.close();
-//		
-//		return true;
-//	}
-//	
-//	public boolean delete() {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		
-//		transaction.begin();
-//		session.delete(this);
-//		transaction.commit();
-//		session.close();
-//		
-//		return true;
-//	}
-//	
-//	public boolean update() {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		
-//		transaction.begin();
-//		session.update(this);
-//		transaction.commit();
-//		session.close();
-//		
-//		return true;
-//	}
-//	
-//	@Transient
-//	public boolean search() {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//			
-//		transaction.begin();
-//		Query query = session.createQuery("from WarehouseCardModel where code = :code");
-//		query.setParameter("code", getWarehouseCode());
-//		
-//		WarehouseCardModel find = (WarehouseCardModel) query.list().get(0);
-//		setWarehouseCode(find.warehouseCode);
-//		setWarehouseName(find.warehouseName);
-//		setWarehouseDescription(find.warehouseDescription);
-//		
-//		transaction.commit();
-//		session.close();
-//		
-//		return true;
-//	}
-//	
-//	@Transient
-//	public boolean isRecorded() {
-//		HibernateSessionManager sessionManager = new HibernateSessionManager();
-//		
-//		Session session = sessionManager.getSession();
-//		Transaction transaction = session.getTransaction();
-//		
-//		transaction.begin();
-//		Query query = session.createQuery("from WarehouseCardModel where code = :code");
-//		query.setParameter("code", getWarehouseCode());
-//		
-//		int find = query.list().size();
-//		
-//		if(find == 0) {
-//			return false;
-//		}
-//		return true;
-//	}
-	
-	@Transient
-	public List<E> fillWarehouseCodeCombobox(String whereClause) {
+	public <E> List<E> fillWarehouseCodeCombobox(String whereClause) {
 		HibernateSessionManager sessionManager = new HibernateSessionManager();
 		
 		Session session = sessionManager.getSession();
@@ -203,5 +93,25 @@ public class WarehouseCardModel<E> extends BaseCardModel {
 		session.close();
 		return results;
 		
+	}
+
+	@Override
+	public BaseEntity emptyModel() {
+		return new WarehouseCardModel(mainFrame);
+	}
+	
+	@Override
+	public void setCodeChangeComponentDataList() {
+		
+	}
+	
+	@Override
+	public String getTableName() {
+		return TABLE;
+	}
+	
+	@Override
+	public String getAlias() {
+		return ALIAS;
 	}
 }

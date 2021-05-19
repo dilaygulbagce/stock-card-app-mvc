@@ -10,6 +10,8 @@ import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 @SuppressWarnings("serial")
 public class WarehouseCardListFrame extends JInternalFrame {
@@ -22,14 +24,12 @@ public class WarehouseCardListFrame extends JInternalFrame {
 		setTitle("Depo Kart Listesi");
 		setClosable(true);
 		setIconifiable(true);
-		setBounds(100, 100, 337, 410);
-		getContentPane().setLayout(null);
+		setBounds(100, 100, 315, 400);
 		
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 37, 313, 347);
-		getContentPane().add(scrollPane);
 		
 		warehouseCardTable = new JTable();
 		warehouseCardTable.setForeground(Color.BLACK);
@@ -45,6 +45,23 @@ public class WarehouseCardListFrame extends JInternalFrame {
 		
 		listButton = new JButton("Listele");
 		listButton.setBounds(197, 6, 110, 29);
-		getContentPane().add(listButton);
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap(217, Short.MAX_VALUE)
+					.addComponent(listButton, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(listButton)
+					.addGap(2)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
+		);
+		getContentPane().setLayout(groupLayout);
 	}
 }
